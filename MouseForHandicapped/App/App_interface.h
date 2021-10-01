@@ -14,9 +14,9 @@ void App_Init();
 
 
 /****
- * Description: Initialization of Different Application components
+ * Description: Get Direction of Gradient of head 
  * Args: None
- * Return: uint8_t gradient Direction (LEFT, RIGHT, UP, DOWN)
+ * Return: uint8_t gradient_Direction -> (LEFT, RIGHT, UP, DOWN)
  * Ex: uint8_t direction = App_GetImuGradDirection();
  */				
 uint8_t App_GetImuGradDirection(void);
@@ -32,13 +32,13 @@ void App_MoveMouse(uint8_t movement);
 
 
 /****
- * Description: Get the status of touch sensor -> pressed "device is dressed" or not
+ * Description: Get the state of touch sensor -> pressed "device is dressed" or not
  * Args: None
- * Return: uint8_t status (0: not pressed   1: pressed)
- * Ex: uint8_t status = App_GetTouchSensorStatus();
+ * Return: uint8_t status (CONTACT, NOT_CONTACT)
+ * Ex: uint8_t state = App_GetTouchSensorState();
  */				
  
-uint8_t App_GetTouchSensorStatus(void);				
+uint8_t App_GetTouchSensorState(void);				
 
 // Logic					
 /* get readings if reading > threshold in a certain direction take mouse action*/					
