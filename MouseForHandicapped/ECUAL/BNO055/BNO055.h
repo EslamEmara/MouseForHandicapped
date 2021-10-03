@@ -1,15 +1,15 @@
 /*
  * BNO055.h
- *
+ *7
  * Created: 10/2/2021 4:09:14 PM
- *  Author: Omar
+ *  Author: Omar & Eslam
  */ 
 
 
 #ifndef BNO055_H_
 #define BNO055_H_
 
-#include "../MCAL/I2C/I2C.h"
+#include "../../MCAL/I2C/I2C.h"
 // BNO055 Register Map
 // BNO055 Page 0
 #define BNO055_CHIP_ID          0x00    // should be 0xA0
@@ -247,54 +247,39 @@ typedef enum{
 	MAGNETOMETER,
 }EN_SENSOR_t;
 
+typedef enum{
+	ACCELOMETER_FAIL,
+	MAGNETOMETER_FAIL,
+	GYROSCOPE_FAIL,
+	SYSTEM_FAIL,
+}EN_FAIL_t;
 
-uint8_t GPwrMode = NormalG;    // Gyro power mode
-uint8_t Gscale = GFS_250DPS;  // Gyro full scale
-//uint8_t Godr = GODR_250Hz;    // Gyro sample rate
-uint8_t Gbw = GBW_23Hz;       // Gyro bandwidth
-//
-uint8_t Ascale = AFS_2G;      // Accel full scale
-//uint8_t Aodr = AODR_250Hz;    // Accel sample rate
-uint8_t APwrMode = NormalA;    // Accel power mode
-uint8_t Abw = ABW_31_25Hz;    // Accel bandwidth, accel sample rate divided by ABW_divx
-//
-//uint8_t Mscale = MFS_4Gauss;  // Select magnetometer full-scale resolution
-uint8_t MOpMode = Regular;    // Select magnetometer perfomance mode
-uint8_t MPwrMode = Normal;    // Select magnetometer power mode
-uint8_t Modr = MODR_10Hz;     // Select magnetometer ODR when in BNO055 bypass mode
-
-uint8_t PWRMode = Normalpwr;    // Select BNO055 power mode
-uint8_t OPRMode = NDOF;       // specify operation mode for sensors
-uint8_t status;               // BNO055 data status register
-float aRes, gRes, mRes;       // scale resolutions per LSB for the sensors
-
-int16_t accelCount[3];  // Stores the 16-bit signed accelerometer sensor output
-int16_t gyroCount[3];   // Stores the 16-bit signed gyro sensor output
-int16_t magCount[3];    // Stores the 16-bit signed magnetometer sensor output
-int16_t quatCount[4];   // Stores the 16-bit signed quaternion output
-int16_t EulCount[3];    // Stores the 16-bit signed Euler angle output
-int16_t LIACount[3];    // Stores the 16-bit signed linear acceleration output
-int16_t GRVCount[3];    // Stores the 16-bit signed gravity vector output
-float gyroBias[3] = {0, 0, 0}, accelBias[3] = {0, 0, 0}, magBias[3] = {0, 0, 0};  // Bias corrections for gyro, accelerometer, and magnetometer
-int16_t tempGCount, tempMCount;      // temperature raw count output of mag and gyro
-float   Gtemperature, Mtemperature;  // Stores the BNO055 gyro and mag internal chip temperatures in degrees Celsius
+typedef enum{
+	NOT_CALIBRATED,
+	LOW_CALIBRATED,
+	PARTIALLY_CALIBRATED,
+	FULL_CALIBRATED,
+}EN_CALIBRATION_t;
 
 
-uint32_t delt_t = 0, count = 0, sumCount = 0;  // used to control display output rate
-float pitch, yaw, roll;
-float Pitch, Yaw, Roll;
-float LIAx, LIAy, LIAz, GRVx, GRVy, GRVz;
-float deltat = 0.0f, sum = 0.0f;          // integration interval for both filter schemes
-uint32_t lastUpdate = 0, firstUpdate = 0; // used to calculate integration interval
-uint32_t Now = 0;                         // used to calculate integration interval
-
-float ax, ay, az, gx, gy, gz, mx, my, mz; // variables to hold latest sensor data values
-float q[4] = {1.0f, 0.0f, 0.0f, 0.0f};    // vector to hold quaternion
-float quat[4] = {1.0f, 0.0f, 0.0f, 0.0f};    // vector to hold quaternion
-float eInt[3] = {0.0f, 0.0f, 0.0f};       // vector to hold integral error for Mahony method
-	
-	
 /****************************************************** FUNCTIONS PROTOTYPES **************************************/
-void BNO055_Init();	
+void BNO055_Init();
+void BNO055_WriteByte( unsigned char address, unsigned char subAddress, unsigned char data );
+unsigned char BNO055_ReadByte(unsigned char address, unsigned char subAddress);
+void BNO055_ReadBytes(unsigned char address, unsigned char subAddress, unsigned char count, unsigned char * data);
+unsigned char BNO055_GetCalibStat(EN_SENSOR_t sensor);
+void BNO055_ReadAcc(short int * destination);
+void BNO055_ReadGyro(short int * destination);
+void BNO055_ReadMag(short int * destination);
+void BNO055_ReadEulerAngles(int16_t * destination);
+void BNO055_SetCalibratioProfile(long int* accel_bias,long int* gyro_bias,long int* mag_bias,long int accel_radius,long int mag_radius);
+
+void BNO055_GetGyroOffsets(int32_t* gyro_bias);
+void BNO055_GetAccOffsets(int32_t* accel_bias);
+void BNO055_GetMagOffsets(int32_t* mag_bias);
+
+int8_t BNO055_SelfTest();
+int16_t BNO055_GetMagRadius(int32_t mag_radius);
+int16_t BNO055_GetAccRadius(int32_t accel_radius);
 
 #endif /* BNO055_H_ */

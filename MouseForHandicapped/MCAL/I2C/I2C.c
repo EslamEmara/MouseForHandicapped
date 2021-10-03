@@ -163,7 +163,7 @@ void I2C_Slave_Init(uint8_t slave_address)
 	CLEAR_IF;
 }
 
-sint8_t I2C_Slave_Listen()
+int8_t I2C_Slave_Listen()
 {
 	uint8_t status;			
 	while(1)
@@ -180,7 +180,7 @@ sint8_t I2C_Slave_Listen()
 			continue;			
 	}
 }
-sint8_t I2C_Slave_Receive()
+int8_t I2C_Slave_Receive()
 {
 	uint8_t status;		
 	ENABLE_I2C;
@@ -200,10 +200,10 @@ sint8_t I2C_Slave_Receive()
 	else
 		return -2;			
 }
-sint8_t I2C_Slave_Transmit(char data)
+int8_t I2C_Slave_Transmit(char data)
 {
 	uint8_t status;
-	TWDR=data;			/* Write data to TWDR to be transmitted */
+	TWDR_REG=data;			/* Write data to TWDR to be transmitted */
 	ENABLE_I2C;
 	GENERATE_ACK;
 	CLEAR_IF;
@@ -211,7 +211,7 @@ sint8_t I2C_Slave_Transmit(char data)
 	status=TWSR_REG & HIGH_FIVE_BITS;
 	if(status==0xA0)		/* Check for STOP/REPEATED START received */
 	{
-		TWCR|=(1<<TWINT);	/* Clear interrupt flag & return -1 */
+		CLEAR_IF;
 		return -1;
 	}
 	if(status==0xB8)		/* Check for data transmitted &ack received */

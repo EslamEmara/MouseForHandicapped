@@ -43,9 +43,9 @@ uint8_t I2C_Master_Write(char data);							/* I2C write function */
 void I2C_Stop();												/* I2C stop function */
 char I2C_Read_Ack();										/* I2C read ack function */
 char I2C_Read_Nack();									/* I2C read nack function */
-
+uint8_t I2C_Repeated_Start(char read_address);
 void I2C_Slave_Init(uint8_t slave_address);
-sint8_t I2C_Slave_Listen();
+int8_t I2C_Slave_Listen();
 char I2C_Slave_Receive();
 
 #endif /* I2C_H_ */
