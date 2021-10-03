@@ -10,8 +10,11 @@
 #define BNO055_H_
 
 #include "../../MCAL/I2C/I2C.h"
+#include "BNO005_CONFIG.h"
 // BNO055 Register Map
 // BNO055 Page 0
+#define PAGE_0                  0x00
+#define PAGE_1                  0x01
 #define BNO055_CHIP_ID          0x00    // should be 0xA0
 #define BNO055_ACC_ID           0x01    // should be 0xFB
 #define BNO055_MAG_ID           0x02    // should be 0x32
@@ -262,7 +265,7 @@ typedef enum{
 }EN_CALIBRATION_t;
 
 
-/****************************************************** FUNCTIONS PROTOTYPES **************************************/
+/****************************************************** FUNCTIONS PROTOTYPES *************************************************/
 void BNO055_Init();
 void BNO055_WriteByte( unsigned char address, unsigned char subAddress, unsigned char data );
 unsigned char BNO055_ReadByte(unsigned char address, unsigned char subAddress);
