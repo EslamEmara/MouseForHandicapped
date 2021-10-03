@@ -129,6 +129,12 @@
     <Compile Include="APP\App_interface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ECUAL\BNO055\BNO055.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\BNO055\BNO055.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\Mouse\Mouse.c">
       <SubType>compile</SubType>
     </Compile>
@@ -136,6 +142,21 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\BIT_MATH.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\I2C.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\I2C.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\I2C_RegMaph.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\TypeDefs.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\USB\oddebug.c">
@@ -165,9 +186,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ECUAL\Mouse" />
+    <Folder Include="ECUAL\BNO055" />
     <Folder Include="MCAL" />
     <Folder Include="ECUAL" />
     <Folder Include="APP" />
+    <Folder Include="MCAL\I2C" />
     <Folder Include="MCAL\USB" />
   </ItemGroup>
   <ItemGroup>
