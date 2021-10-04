@@ -8,14 +8,14 @@
 #ifndef MOUSE_H_
 #define MOUSE_H_
 #include "../../MCAL/USB/usbdrv.h"
-
+/*
 typedef struct{
 	unsigned char buttonMask;
 	char    dx;
 	char    dy;
 	char    dWheel;
 }report_t;
-
+*/
 void Mouse_init (void) ; 
 void Mouse_MoveLeft(void) ; 
 void Mouse_MoveRight(void) ;	

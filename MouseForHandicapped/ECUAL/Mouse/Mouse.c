@@ -6,7 +6,7 @@
 
 #include "Mouse.h"
 
-static report_t reportBuffer;
+//static report_t reportBuffer;
 
 void Mouse_init (void) {
 	/*  initialize INT0   */ 
