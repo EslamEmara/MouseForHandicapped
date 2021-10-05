@@ -12,6 +12,7 @@ int main()
 	
 	while(1)
 	{
+		// Ensure usb is always up
 		DBG1(0x02, 0, 0);   /* debug output: main loop iterates */
 		wdt_reset();
 		usbPoll();
@@ -22,7 +23,8 @@ int main()
 	    DBG1(0x03, 0, 0);   /* debug output: interrupt report prepared */
 	    usbSetInterrupt((void *)&reportBuffer, sizeof(reportBuffer));
 		}
-	
+		//------------------------------------------
+		// START LOGIC
 		/* Check touch sensor state */
 		uint8_t state = App_GetTouchSensorStatus();
 		

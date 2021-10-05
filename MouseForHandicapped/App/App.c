@@ -82,7 +82,7 @@ void App_OrderMouse(uint8_t order)
 		case DOWN:			Mouse_MoveDown  ();		break;
 		case LEFT_CLICK:	Mouse_LeftClick ();		break;
 		case RIGHT_CLICK:	Mouse_RightClick();		break;
-		default:  									break;
+		case NOTHING:		/* do nothing */		break;
 	}
 }
 

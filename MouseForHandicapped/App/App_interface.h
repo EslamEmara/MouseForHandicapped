@@ -17,6 +17,7 @@ uint16_t current_reading[3];
 #define RIGHT    		3
 #define LEFT_CLICK		4
 #define RIGHT_CLICK		5
+#define NOTHING			255
 
 /* Touch Sensor Status */
 #define CONTACT			6
