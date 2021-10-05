@@ -1,7 +1,10 @@
-
+#include <stdlib.h>
 #include "../ECUAL/LED/LED.h"
 #include "../ECUAL/BNO055/BNO055.h"
 #include "../ECUAL/Mouse/Mouse.h"
+#include "App_private.h"
+#include "App_interface.h"
+#include "App_config.h"
 
 
 /****
@@ -28,7 +31,7 @@ void App_Init()
  */				
 uint8_t App_GetImuGradient(void)
 {
-	uint16_t absolute_gradient[3]; // current_reading - reference_point
+	int16_t absolute_gradient[3]; // current_reading - reference_point
 	//-- get current imu reading
 	BNO055_ReadEulerAngles(current_reading);
 	//-- compare this reading to calibration point to know imu (head) gradient
@@ -36,9 +39,30 @@ uint8_t App_GetImuGradient(void)
 	absolute_gradient[1] = current_reading[1] - angles[1];
 	absolute_gradient[2] = current_reading[2] - angles[2];
 	//-- decide depending on calculations to which direction mouse should move
-	
-	//-- return that direction
-	return;
+	// get the largest angle of them (sign isn't considered)
+	uint8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
+	switch(angle_name)
+	{
+		// head is turned around X-axis
+		case ROLL:
+			// positive angle > threshold?
+			if(absolute_gradient[0] >= THRESHOLD_X ){ return RIGHT_CLICK; }
+			// negative angle > threshold?
+			else if ( (-1*absolute_gradient[0]) >= THRESHOLD_X ){ return LEFT_CLICK; }
+			break;
+		// head is turned around Y-axis
+		case PITCH:
+			if(absolute_gradient[1] >= THRESHOLD_Y){ return UP; }
+			else if ( (-1*absolute_gradient[1]) >= THRESHOLD_Y ){ return DOWN; }
+			break;
+		// head is turned around Z-axis
+		case YAW:
+			if(absolute_gradient[2] >= THRESHOLD_Z){ return RIGHT; }
+			else if ( (-1*absolute_gradient[2]) >= THRESHOLD_Z ){ return LEFT; }
+			break;
+	}
+	//-- no head motion 
+	return NOTHING;
 }
 
 
@@ -123,7 +147,30 @@ uint8_t App_GetCalibStatus(void)
 
 
 
-
+/*****
+ * Description: Get the largest value regardless the signs
+ * args: value1 -> (int16_t)
+ *		 value2 -> (int16_t)
+ *		 value3 -> (int16_t)
+ * return: index of the largest value (1 or 2 or 3) -> uint8_t
+ * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
+ */
+static uint8_t App_GetLargestAngle(int16_t value1,int16_t value2,int16_t value3)
+{
+	value1 = abs(value1);
+	value2 = abs(value2);
+	value3 = abs(value3);
+	if(value1 > value2)
+	{
+		if(value1 > value3)		{ return 1; }
+		else 					{ return 3; }
+	}
+	else
+	{
+		if(value2 > value3)		{ return 2; }
+		else 					{ return 3; }
+	}
+}
 
 
 
