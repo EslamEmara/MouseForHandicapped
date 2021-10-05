@@ -12,6 +12,9 @@
  */
 void App_Init()
 {
+	LED_Init(LED_RED);
+	LED_TurnOn(LED_RED);	
+	LED_Init(LED_GREEN);
 	BNO055_Init();
 	Mouse_init();
 	TouchInit();
@@ -20,7 +23,7 @@ void App_Init()
 /****
  * Description: Get Direction of Gradient of head
  * Args: None
- * Return: uint8_t gradient Direction (LEFT, RIGHT, UP, DOWN)
+ * Return: uint8_t gradient Direction (LEFT, RIGHT, UP, DOWN, LEFT_CLICK, RIGHT_CLICK)
  * Ex: uint8_t direction = App_GetImuGradDirection();
  */				
 uint8_t App_GetImuGradDirection(void)
@@ -62,15 +65,51 @@ uint8_t App_GetTouchSensorState(void)
 	uint8_t reading = GetTouchReading();	
 	if(reading == HIGH)
 	{
+		LED_TurnOn(LED_GREEN);
+		LED_TurnOff(LED_RED);
 		return CONTACT;
 	}
 	else
 	{
+		LED_TurnOn(LED_RED);
+		LED_TurnOff(LED_GREEN);
 		return NOT_CONTACT;
 	}
 }
 
 
+/****
+ * Description: Get initial point that the others are measured relative to (calibration point)
+ * Args: array of 3 elements[x,y,z] (float*)
+ * Return: None
+ * Ex: App_GetImuCalibPoint(angles);
+ */
+void App_GetImuCalibPoint(float angles[])
+{
+	// get calibration point
+}
+
+
+
+/****
+ * Description: check if sensors are calibrated successfully or not
+ * Args: None
+ * Return: calibration status [CALIBRATED, NOT_CALIBRATED] -> (uint8_t)
+ * Ex: uint8_t calib_status = App_GetCalibStatus();
+ */
+uint8_t App_GetCalibStatus(void)
+{
+	uint8_t sensor_S = BNO055_GetCalibStat(SYSTEM);
+	uint8_t sensor_G = BNO055_GetCalibStat(GYROSCOPE);
+	uint8_t sensor_A = BNO055_GetCalibStat(ACCELOMETER);
+	uint8_t sensor_M = BNO055_GetCalibStat(MAGNETOMETER);
+	
+	if( sensor_S>LOW_CALIBRATED && sensor_G>LOW_CALIBRATED && sensor_A>LOW_CALIBRATED && sensor_M>LOW_CALIBRATED )
+	{
+		return CALIBRATED
+	}
+	return NOT_CALIBRATED
+}
 
 
 

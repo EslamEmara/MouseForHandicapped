@@ -9,7 +9,7 @@
 static report_t reportBuffer;
 
 void Mouse_init (void) {
-	/*  initialize INT0   */ 
+	/*  initialize INT0   */
 }
 void Mouse_MoveLeft(void) {
 	reportBuffer.dx = -1 ;
