@@ -21,14 +21,24 @@ void App_Init()
 }
 
 /****
- * Description: Get Direction of Gradient of head
+ * Description: Get mouse Direction from Gradient of head 
  * Args: None
- * Return: uint8_t gradient Direction (LEFT, RIGHT, UP, DOWN, LEFT_CLICK, RIGHT_CLICK)
- * Ex: uint8_t direction = App_GetImuGradDirection();
+ * Return: uint8_t gradient_Direction -> (LEFT, RIGHT, UP, DOWN)
+ * Ex: uint8_t direction = App_GetImuGradient();
  */				
-uint8_t App_GetImuGradDirection(void)
+uint8_t App_GetImuGradient(void)
 {
+	uint16_t absolute_gradient[3]; // current_reading - reference_point
+	//-- get current imu reading
+	BNO055_ReadEulerAngles(current_reading);
+	//-- compare this reading to calibration point to know imu (head) gradient
+	absolute_gradient[0] = current_reading[0] - angles[0];
+	absolute_gradient[1] = current_reading[1] - angles[1];
+	absolute_gradient[2] = current_reading[2] - angles[2];
+	//-- decide depending on calculations to which direction mouse should move
 	
+	//-- return that direction
+	return;
 }
 
 

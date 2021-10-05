@@ -5,8 +5,9 @@
 #define APP_INTERFACE_H_
 
 //------ Global Variables --------
-float angles[3];
-float current_reading[3];
+ // X,Y,Z -> Roll,pitch,yaw
+uint16_t angles[3];
+uint16_t current_reading[3];
 
 
 /* Movements of Mouse */
@@ -35,12 +36,12 @@ void App_Init();
 
 
 /****
- * Description: Get Direction of Gradient of head 
+ * Description: Get mouse Direction from Gradient of head 
  * Args: None
  * Return: uint8_t gradient_Direction -> (LEFT, RIGHT, UP, DOWN)
- * Ex: uint8_t direction = App_GetImuGradDirection();
+ * Ex: uint8_t direction = App_GetImuGradient();
  */				
-uint8_t App_GetImuGradDirection(void);
+uint8_t App_GetImuGradient(void);
 
 
 /****
