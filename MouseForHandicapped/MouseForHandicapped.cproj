@@ -129,10 +129,19 @@
     <Compile Include="APP\App_interface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ECUAL\BNO055\BNO005_CONFIG.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\BNO055\BNO055.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ECUAL\BNO055\BNO055.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\LED\LED_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\LED\LED_program.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ECUAL\Mouse\Mouse.c">
@@ -157,6 +166,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\I2C\TypeDefs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\TIMER\bit_operations.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\TIMER\timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\TIMER\timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\USB\oddebug.c">
@@ -185,12 +203,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ECUAL\LED\" />
     <Folder Include="ECUAL\Mouse" />
     <Folder Include="ECUAL\BNO055" />
     <Folder Include="MCAL" />
     <Folder Include="ECUAL" />
     <Folder Include="APP" />
     <Folder Include="MCAL\I2C" />
+    <Folder Include="MCAL\TIMER" />
     <Folder Include="MCAL\USB" />
   </ItemGroup>
   <ItemGroup>

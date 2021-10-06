@@ -11,6 +11,7 @@
 
 #include "../../MCAL/I2C/I2C.h"
 #include "BNO005_CONFIG.h"
+#include "../../MCAL/TIMER/timer.h"
 // BNO055 Register Map
 // BNO055 Page 0
 #define PAGE_0                  0x00

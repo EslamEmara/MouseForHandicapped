@@ -6,11 +6,15 @@ APP\App.c
 
 ECUAL\BNO055\BNO055.c
 
+ECUAL\LED\LED_program.c
+
 ECUAL\Mouse\Mouse.c
 
 main.c
 
 MCAL\I2C\I2C.c
+
+MCAL\TIMER\timer.c
 
 MCAL\USB\oddebug.c
 

@@ -8,6 +8,18 @@
 
 void BNO055_Init()
 {
+	delay_ms(100);
+	int32_t* gyro_bias, *mag_bias, *acc_bias;
+	int16_t acc_radius, mag_radius;
+	acc_radius = BNO055_GetAccRadius();
+	mag_radius = BNO055_GetMagRadius();
+	
+	BNO055_GetMagOffsets(&mag_bias);
+	BNO055_GetAccOffsets(&acc_bias);
+	BNO055_GetGyroOffsets(&gyro_bias);
+	BNO055_SetCalibratioProfile(acc_bias,gyro_bias, mag_bias, acc_radius, mag_radius);
+	//BNO055_GetCalibStat();
+	
 	BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
 	// Select page 1 to configure sensors
 	BNO055_WriteByte(BNO055_ADDRESS, BNO055_PAGE_ID, PAGE_1);

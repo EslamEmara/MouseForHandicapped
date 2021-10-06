@@ -33,12 +33,14 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
+../ECUAL/LED/ \
 ../ECUAL/Mouse \
 ../ECUAL/BNO055 \
 ../MCAL \
 ../ECUAL \
 ../APP \
 ../MCAL/I2C \
+../MCAL/TIMER \
 ../MCAL/USB
 
 
@@ -46,9 +48,11 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../APP/App.c \
 ../ECUAL/BNO055/BNO055.c \
+../ECUAL/LED/LED_program.c \
 ../ECUAL/Mouse/Mouse.c \
 ../main.c \
 ../MCAL/I2C/I2C.c \
+../MCAL/TIMER/timer.c \
 ../MCAL/USB/oddebug.c \
 ../MCAL/USB/usbdrv.c
 
@@ -63,9 +67,11 @@ ASM_SRCS +=
 OBJS +=  \
 APP/App.o \
 ECUAL/BNO055/BNO055.o \
+ECUAL/LED/LED_program.o \
 ECUAL/Mouse/Mouse.o \
 main.o \
 MCAL/I2C/I2C.o \
+MCAL/TIMER/timer.o \
 MCAL/USB/oddebug.o \
 MCAL/USB/usbdrv.o \
 MCAL/USB/usbdrvasm.o
@@ -73,9 +79,11 @@ MCAL/USB/usbdrvasm.o
 OBJS_AS_ARGS +=  \
 APP/App.o \
 ECUAL/BNO055/BNO055.o \
+ECUAL/LED/LED_program.o \
 ECUAL/Mouse/Mouse.o \
 main.o \
 MCAL/I2C/I2C.o \
+MCAL/TIMER/timer.o \
 MCAL/USB/oddebug.o \
 MCAL/USB/usbdrv.o \
 MCAL/USB/usbdrvasm.o
@@ -83,9 +91,11 @@ MCAL/USB/usbdrvasm.o
 C_DEPS +=  \
 APP/App.d \
 ECUAL/BNO055/BNO055.d \
+ECUAL/LED/LED_program.d \
 ECUAL/Mouse/Mouse.d \
 main.d \
 MCAL/I2C/I2C.d \
+MCAL/TIMER/timer.d \
 MCAL/USB/oddebug.d \
 MCAL/USB/usbdrv.d \
 MCAL/USB/usbdrvasm.d
@@ -93,9 +103,11 @@ MCAL/USB/usbdrvasm.d
 C_DEPS_AS_ARGS +=  \
 APP/App.d \
 ECUAL/BNO055/BNO055.d \
+ECUAL/LED/LED_program.d \
 ECUAL/Mouse/Mouse.d \
 main.d \
 MCAL/I2C/I2C.d \
+MCAL/TIMER/timer.d \
 MCAL/USB/oddebug.d \
 MCAL/USB/usbdrv.d \
 MCAL/USB/usbdrvasm.d
@@ -128,6 +140,13 @@ ECUAL/BNO055/BNO055.o: ../ECUAL/BNO055/BNO055.c
 	@echo Finished building: $<
 	
 
+ECUAL/LED/LED_program.o: ../ECUAL/LED/LED_program.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega32" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ECUAL/Mouse/Mouse.o: ../ECUAL/Mouse/Mouse.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -143,6 +162,13 @@ ECUAL/Mouse/Mouse.o: ../ECUAL/Mouse/Mouse.c
 	
 
 MCAL/I2C/I2C.o: ../MCAL/I2C/I2C.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega32" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+MCAL/TIMER/timer.o: ../MCAL/TIMER/timer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega32" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
