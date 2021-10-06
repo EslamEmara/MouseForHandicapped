@@ -12,6 +12,7 @@
 #include "../../MCAL/DIO/DIO.h"
 
 
+
 typedef struct config{
 	EN_PORTS_t TOUCH_PORT;
 	EN_PINS_t TOUCH_PIN;

@@ -129,6 +129,9 @@
     <Compile Include="APP\App_interface.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="APP\App_private.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\BNO055\BNO005_CONFIG.h">
       <SubType>compile</SubType>
     </Compile>

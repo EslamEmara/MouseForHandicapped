@@ -20,8 +20,8 @@ uint16_t current_reading[3];
 #define NOTHING			255
 
 /* Touch Sensor Status */
-#define CONTACT			6
-#define NOT_CONTACT		7
+#define CONTACT			1
+#define NOT_CONTACT		0
 
 /* Calibration Status */
 #define CALIBRATED 		8

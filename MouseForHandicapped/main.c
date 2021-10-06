@@ -1,8 +1,6 @@
 
 
-
-
-
+#include "MCAL/DIO/TypeDefs.h"
 #include "APP/App_interface.h"
 
 int main()
@@ -26,7 +24,7 @@ int main()
 		//------------------------------------------
 		// START LOGIC
 		/* Check touch sensor state */
-		uint8_t state = App_GetTouchSensorStatus();
+		uint8_t state = App_GetTouchSensorState();
 		
 		if(state == CONTACT)
 		{
@@ -35,7 +33,7 @@ int main()
 			
 			
 			// Get current gradient of imu (required mouse motion direction)
-			uint8_t motion_direction = App_GetImuGradDirection();
+			uint8_t motion_direction = App_GetImuGradient();
 			// move mouse
 			App_OrderMouse(motion_direction);
 		}

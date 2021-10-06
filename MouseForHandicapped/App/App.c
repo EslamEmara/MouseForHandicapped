@@ -1,9 +1,11 @@
 #include <stdlib.h>
-#include "../ECUAL/LED/LED.h"
+#include "../MCAL/DIO/TypeDefs.h"
+#include "../ECUAL/LED/LED_interface.h"
+#include "../ECUAL/Touch/Touch.h"
 #include "../ECUAL/BNO055/BNO055.h"
 #include "../ECUAL/Mouse/Mouse.h"
-#include "App_private.h"
 #include "App_interface.h"
+#include "App_private.h"
 #include "App_config.h"
 
 
@@ -20,7 +22,7 @@ void App_Init()
 	LED_Init(LED_GREEN);
 	BNO055_Init();
 	Mouse_init();
-	TouchInit();
+	Touch_Init(config);
 }
 
 /****
@@ -96,7 +98,7 @@ void App_OrderMouse(uint8_t order)
 uint8_t App_GetTouchSensorState(void)
 {
 	/* get sensor reading */
-	uint8_t reading = GetTouchReading();	
+	uint8_t reading = Touch_Read(config);	
 	if(reading == HIGH)
 	{
 		LED_TurnOn(LED_GREEN);
@@ -105,8 +107,8 @@ uint8_t App_GetTouchSensorState(void)
 	}
 	else
 	{
-		LED_TurnOn(LED_RED);
 		LED_TurnOff(LED_GREEN);
+		LED_TurnOn(LED_RED);
 		return NOT_CONTACT;
 	}
 }
@@ -140,9 +142,9 @@ uint8_t App_GetCalibStatus(void)
 	
 	if( sensor_S>LOW_CALIBRATED && sensor_G>LOW_CALIBRATED && sensor_A>LOW_CALIBRATED && sensor_M>LOW_CALIBRATED )
 	{
-		return CALIBRATED
+		return CALIBRATED;
 	}
-	return NOT_CALIBRATED
+	return NOT_CALIBRATED;
 }
 
 
@@ -155,7 +157,7 @@ uint8_t App_GetCalibStatus(void)
  * return: index of the largest value (1 or 2 or 3) -> uint8_t
  * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
  */
-static uint8_t App_GetLargestAngle(int16_t value1,int16_t value2,int16_t value3)
+static uint8_t App_GetLargestAngle(sint16_t value1,sint16_t value2,sint16_t value3)
 {
 	value1 = abs(value1);
 	value2 = abs(value2);
@@ -171,7 +173,3 @@ static uint8_t App_GetLargestAngle(int16_t value1,int16_t value2,int16_t value3)
 		else 					{ return 3; }
 	}
 }
-
-
-
-

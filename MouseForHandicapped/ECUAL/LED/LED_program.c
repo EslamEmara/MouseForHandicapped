@@ -3,26 +3,24 @@
 /* Version : v01                                         */
 /* Date    : Sept 21 2021                              */
 /*********************************************************/
-#include "STD_TYPES.h"
-#include "BIT_MATH.h"
-
-#include "DIO_interface.h"
+#include "../../MCAL/DIO/TypeDefs.h"
+#include "../../MCAL/DIO/DIO.h"
 #include "LED_interface.h"
 
 
-void LED_Init(u8 copy_u8Port , u8 copy_u8Pin)
+void LED_Init(uint8_t copy_u8Port , uint8_t copy_u8Pin)
 {
-	GPIO_setPinDirection(copy_u8Port ,copy_u8Pin, OUTPUT );	
+	DIO_setPinDir(copy_u8Port ,copy_u8Pin, OUT );	
 }
 
 
-void LED_TurnOn(u8 copy_u8Port , u8 copy_u8Pin)
+void LED_TurnOn(uint8_t copy_u8Port , uint8_t copy_u8Pin)
 {
-	MGPIO_voidSetPinValue( copy_u8Port , copy_u8Pin , HIGH );
+	DIO_setPin( copy_u8Port , copy_u8Pin);
 }
 
 
-void LED_TurnOff(u8 copy_u8Port , u8 copy_u8Pin)
+void LED_TurnOff(uint8_t copy_u8Port , uint8_t copy_u8Pin)
 {
-     MGPIO_voidSetPinValue(copy_u8Port , copy_u8Pin , LOW );
+     DIO_clearPin(copy_u8Port , copy_u8Pin);
 }
