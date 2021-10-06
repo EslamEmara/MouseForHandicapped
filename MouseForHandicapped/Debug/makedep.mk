@@ -10,7 +10,11 @@ ECUAL\LED\LED_program.c
 
 ECUAL\Mouse\Mouse.c
 
+ECUAL\Touch\Touch.c
+
 main.c
+
+MCAL\DIO\DIO.c
 
 MCAL\I2C\I2C.c
 

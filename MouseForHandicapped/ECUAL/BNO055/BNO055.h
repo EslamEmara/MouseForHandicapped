@@ -11,7 +11,6 @@
 
 #include "../../MCAL/I2C/I2C.h"
 #include "BNO005_CONFIG.h"
-#include "../../MCAL/TIMER/timer.h"
 // BNO055 Register Map
 // BNO055 Page 0
 #define PAGE_0                  0x00
@@ -133,7 +132,6 @@
 
 
 // Using the BNO055_BMP280 breakout board/Teensy 3.1 Add-On Shield, ADO is set to 1 by default
-#define ADO 1
 #if ADO
 #define BNO055_ADDRESS 0x29   //  Device address of BNO055 when ADO = 1
 #else
@@ -244,46 +242,169 @@ enum MPwrMode { // MAG power mode
 	ForceMode
 };
 
-typedef enum{
+typedef enum{					/*sensor types*/
 	SYSTEM,
 	GYROSCOPE,
 	ACCELOMETER,
 	MAGNETOMETER,
 }EN_SENSOR_t;
 
-typedef enum{
-	ACCELOMETER_FAIL,
+typedef enum{					/*sensor fails*/
+	ACCELOMETER_FAIL=5,
 	MAGNETOMETER_FAIL,
 	GYROSCOPE_FAIL,
 	SYSTEM_FAIL,
+	BNO055_SUCCESS,
 }EN_FAIL_t;
 
-typedef enum{
+typedef enum{				/*calibration status*/
 	NOT_CALIBRATED,
 	LOW_CALIBRATED,
 	PARTIALLY_CALIBRATED,
 	FULL_CALIBRATED,
 }EN_CALIBRATION_t;
 
+typedef struct offsets{		/*sensors offsets and radius*/
+	int32_t ACCEL_OFFSET[3];
+	int32_t GYRO_OFFSET[3];
+	int32_t MAG_OFFSET[3];
+	int32_t ACCEL_RADIUS;
+	int32_t MAG_RADIUS;
+}ST_BIAS_t;
 
 /****************************************************** FUNCTIONS PROTOTYPES *************************************************/
-void BNO055_Init();
-void BNO055_WriteByte( unsigned char address, unsigned char subAddress, unsigned char data );
-unsigned char BNO055_ReadByte(unsigned char address, unsigned char subAddress);
-void BNO055_ReadBytes(unsigned char address, unsigned char subAddress, unsigned char count, unsigned char * data);
-unsigned char BNO055_GetCalibStat(EN_SENSOR_t sensor);
-void BNO055_ReadAcc(short int * destination);
-void BNO055_ReadGyro(short int * destination);
-void BNO055_ReadMag(short int * destination);
-void BNO055_ReadEulerAngles(int16_t * destination);
-void BNO055_SetCalibratioProfile(long int* accel_bias,long int* gyro_bias,long int* mag_bias,long int accel_radius,long int mag_radius);
 
+/*
+*Function to initalize BNO055 with related configrations in config file
+*return: EN_FAIL_t in case of any sensor fail in self test
+*the function stucks in a loop till the calibration is completed for reliable values
+*to speed up calibration process you can use GetOffsets and Get Radius functions and SetCalibProfile
+*Functions to store calibrated offsets after every boot
+*
+*/
+EN_FAIL_t BNO055_Init();
+
+void BNO055_WriteByte(uint8_t address, uint8_t subAddress, uint8_t data);
+uint8_t BNO055_ReadByte(uint8_t address, uint8_t subAddress);
+void BNO055_ReadBytes(uint8_t address, uint8_t subAddress, uint8_t count, uint8_t * data);
+
+EN_CALIBRATION_t BNO055_GetCalibStat(EN_SENSOR_t sensor);
+/*
+*	Function to read the accelometer data
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+					acceleration in x ,y ,z
+*	void return
+*
+*/
+void BNO055_ReadAcc(int16_t * destination);
+
+/*
+*	Function to read the gyroscope data
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+					gyroscope in x ,y ,z
+*	void return
+*
+*/
+void BNO055_ReadGyro(int16_t * destination);
+
+/*
+*	Function to read the magnetometer data
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+					magnetometer in x ,y ,z
+*	void return
+*
+*/
+void BNO055_ReadMag(int16_t * destination);
+
+/*
+*	Function to read the euler andles data from the sensor
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+					angles in x ,y ,z		(yaw,roll,pitch)
+*	void return
+*
+*/
+void BNO055_ReadEulerAngles(int16_t * destination);
+
+
+/*
+*	Function to Get Gyro offsets to be used for fast calibration (must be called after FULL_CALIBRATED)
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the
+						Gyro offsets in x ,y ,z
+*/
 void BNO055_GetGyroOffsets(int32_t* gyro_bias);
+
+/*
+*	Function to set Gyro offsets by pre known values for fast calibration
+*	input parameter: int16_t pointer to first element of array of 3 elements that will hold the
+						Gyro offsets in x ,y ,z
+*/
+void BNO055_SetGyroOffsets(int32_t* gyro_bias);
+
+/*
+*	Function to Get accelometer offsets to be used for fast calibration (must be called after FULL_CALIBRATED)
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the
+						accelometer offsets in x ,y ,z
+*/
 void BNO055_GetAccOffsets(int32_t* accel_bias);
+
+/*
+*	Function to set accelometer offsets by pre known values for fast calibration
+*	input parameter: int16_t pointer to first element of array of 3 elements that will hold the
+						accelometer offsets in x ,y ,z
+*/
+void BNO055_SetAccOffsets(int32_t* accel_bias);
+
+/*
+*	Function to Get Magnetometer offsets to be used for fast calibration (must be called after FULL_CALIBRATED)
+*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the
+						Magnetometer offsets in x ,y ,z
+*/
 void BNO055_GetMagOffsets(int32_t* mag_bias);
 
-int8_t BNO055_SelfTest();
-int16_t BNO055_GetMagRadius(int32_t mag_radius);
-int16_t BNO055_GetAccRadius(int32_t accel_radius);
+/*
+*	Function to set Magnetometer offsets by pre known values for fast calibration
+*	input parameter: int16_t pointer to first element of array of 3 elements that will hold the
+						Magnetometer offsets in x ,y ,z
+*/
+void BNO055_SetMagOffsets(int32_t* mag_bias);
+
+/*Function to set the calibration offsets and radius of all sensors together with saved value
+*save value must be saved after a FULL_CALIBRATED mode and be loaded into regs after every bootup for fast calibration
+*inputs ST_BIAS_t	that holds offsets and radius			(see BNO055.h for definition)*
+*
+*/
+void BNO055_SetCalibratioProfile(ST_BIAS_t bias);
+
+/*
+*	Function to Get Magnetometer radius to be used for fast calibration (must be called after FULL_CALIBRATED)
+*	output parameter: int16_t variable that holds the radius value of Magnetometer
+*/
+int16_t BNO055_GetMagRadius();
+
+/*
+*	Function to set Magnetometer radius by pre known values for fast calibration
+*	input parameter: int32_t variable that holds the radius value
+*/
+void BNO055_SetMagRadius(int32_t mag_radius);
+
+/*
+*	Function to Get Accelometer radius to be used for fast calibration (must be called after FULL_CALIBRATED)
+*	output parameter: int16_t variable that holds the radius value of accelometer
+*/
+int16_t BNO055_GetAccRadius();
+
+/*
+*	Function to set Accelometer radius by pre known values for fast calibration
+*	input parameter: int32_t variable that holds the radius value
+*/
+void BNO055_SetAccRadius(int32_t accel_radius);
+
+
+/*
+*Function to Test the sensors see if they fail in hardware or not
+*return EN_FAIL_t of the failed sensor (see BNO055.h for definition)
+*		return
+*/
+EN_FAIL_t BNO055_SelfTest();
 
 #endif /* BNO055_H_ */

@@ -150,7 +150,31 @@
     <Compile Include="ECUAL\Mouse\Mouse.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ECUAL\Touch\Touch.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\Touch\Touch.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO_config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\Math.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\RegMap.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\TypeDefs.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\I2C\BIT_MATH.h">
@@ -206,10 +230,12 @@
     <Folder Include="ECUAL\LED\" />
     <Folder Include="ECUAL\Mouse" />
     <Folder Include="ECUAL\BNO055" />
+    <Folder Include="ECUAL\Touch" />
     <Folder Include="MCAL" />
     <Folder Include="ECUAL" />
     <Folder Include="APP" />
     <Folder Include="MCAL\I2C" />
+    <Folder Include="MCAL\DIO" />
     <Folder Include="MCAL\TIMER" />
     <Folder Include="MCAL\USB" />
   </ItemGroup>
