@@ -10,11 +10,11 @@
 #define I2C_REGMAPH_H_
 #include "TypeDefs.h"
 
-#define TWSR_REG				(*(volatile uint8_t*)(0x21))
-#define TWBR_REG				(*(volatile uint8_t*)(0x20))
-#define I2C_CONTROL_REG			(*(volatile uint8_t*)(0x56))
-#define TWDR_REG				(*(volatile uint8_t*)(0x23))
-#define TWAR_REG				(*(volatile uint8_t*)(0x22))
+#define TWSR_REG				(*(volatile u8_t*)(0x21))
+#define TWBR_REG				(*(volatile u8_t*)(0x20))
+#define I2C_CONTROL_REG			(*(volatile u8_t*)(0x56))
+#define TWDR_REG				(*(volatile u8_t*)(0x23))
+#define TWAR_REG				(*(volatile u8_t*)(0x22))
 
 #define TWISTA				5
 #define I2C_ENABLE_BIT		2

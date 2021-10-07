@@ -16,7 +16,7 @@
 */
 void DIO_init(ST_DIO_config_t configs)
 {	
-	uint8_t i =0;
+	u8_t i =0;
 	for(i=0; i<8;i++)
 	{
 		if(configs.DIR[i] == OUT){
@@ -107,12 +107,12 @@ void DIO_setPin(EN_PORTS_t port,EN_PINS_t pin)
 }
 /*
 *Function to write data to the whole port 
-*Inputs : EN_PORTS_t port ,uint8_t data
+*Inputs : EN_PORTS_t port ,u8_t data
 * EX: DIO_writePort(PORTA,0x0F);
 * this example set the first 4 bits to 0xF HIGH and the last 4 bits to 0x0 LOW
 * void return.
 */
-void DIO_writePort(EN_PORTS_t port,uint8_t bin_pins)
+void DIO_writePort(EN_PORTS_t port,u8_t bin_pins)
 {
 	REG(port)=bin_pins;
 }
@@ -129,11 +129,11 @@ void DIO_clearPin(EN_PORTS_t port,EN_PINS_t pin)
 /*
 *Function to return Pin data 
 *Inputs : EN_PORTS_t port ,EN_PINS_t pin no
-* return uint8_t that holds the input value
+* return u8_t that holds the input value
 */	
-uint8_t DIO_getPin(EN_PORTS_t port,EN_PINS_t pin)
+u8_t DIO_getPin(EN_PORTS_t port,EN_PINS_t pin)
 {
-	return GETBIT(REG(port-0x02),(uint8_t)pin);
+	return GETBIT(REG(port-0x02),(u8_t)pin);
 }
 	
 /*

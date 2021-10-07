@@ -195,15 +195,6 @@
     <Compile Include="MCAL\I2C\TypeDefs.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="MCAL\TIMER\bit_operations.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MCAL\TIMER\timer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MCAL\TIMER\timer.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="MCAL\USB\oddebug.c">
       <SubType>compile</SubType>
     </Compile>
@@ -239,7 +230,6 @@
     <Folder Include="APP" />
     <Folder Include="MCAL\I2C" />
     <Folder Include="MCAL\DIO" />
-    <Folder Include="MCAL\TIMER" />
     <Folder Include="MCAL\USB" />
   </ItemGroup>
   <ItemGroup>

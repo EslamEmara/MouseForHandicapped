@@ -9,10 +9,10 @@
 #include "I2C.h"
 
 
-uint8_t I2C_Init(EN_ClockFreq_t FCPU,uint32_t SCL_Freq){
+u8_t I2C_Init(EN_ClockFreq_t FCPU,s32_t SCL_Freq){
 	
-	uint8_t TWSR_value = 0;
-	uint8_t found = 0;
+	u8_t TWSR_value = 0;
+	u8_t found = 0;
 	float test_equation = log(4)*(((FCPU / SCL_Freq) -16)/510);
 	if (test_equation < 0){
 		return INIT_ERROR;
@@ -25,16 +25,16 @@ uint8_t I2C_Init(EN_ClockFreq_t FCPU,uint32_t SCL_Freq){
 		}
 	}
 	if (found == 1){
-		TWBR_REG =(uint8_t) (((FCPU / SCL_Freq) -16) / (2 * pow(4,TWSR_value)));
+		TWBR_REG =(u8_t) (((FCPU / SCL_Freq) -16) / (2 * pow(4,TWSR_value)));
 		return SUCCESS;
 	}
 	else {
 		return INIT_ERROR;
 	}
 }
-void I2C_Start_Wait(char write_address)						/* I2C start wait function */
+void I2C_Start_Wait(s8_t write_address)						/* I2C start wait function */
 {
-	uint8_t status;											
+	u8_t status;											
 	
 	while (1)
 	{
@@ -60,9 +60,9 @@ void I2C_Start_Wait(char write_address)						/* I2C start wait function */
 	}
 }
 
-uint8_t I2C_Master_Start(char write_address)						
+u8_t I2C_Master_Start(s8_t write_address)						
 {
-	uint8_t status;		
+	u8_t status;		
 	GENERATE_START;
 	ENABLE_I2C;
 	CLEAR_IF;
@@ -88,9 +88,9 @@ uint8_t I2C_Master_Start(char write_address)
 		return 3;
 
 }
-uint8_t I2C_Master_Write(char data)							
+u8_t I2C_Master_Write(s8_t data)							
 {
-	uint8_t status;		
+	u8_t status;		
 
 	TWDR_REG = data;											
 	ENABLE_I2C;
@@ -105,9 +105,9 @@ uint8_t I2C_Master_Write(char data)
 	else
 		return 2;
 }
-uint8_t I2C_Repeated_Start(char read_address) 
+u8_t I2C_Repeated_Start(s8_t read_address) 
 {
-	uint8_t status;		
+	u8_t status;		
 	ENABLE_I2C;
 	CLEAR_IF;
 	GENERATE_START;
@@ -136,7 +136,7 @@ void I2C_Stop()
 	SETBIT(I2C_CONTROL_REG,TWSTO);
 	while(GETBIT(I2C_CONTROL_REG,TWSTO));								
 }
-char I2C_Read_Ack()											
+s8_t I2C_Read_Ack()											
 {
 	ENABLE_I2C;
 	CLEAR_IF;
@@ -146,7 +146,7 @@ char I2C_Read_Ack()
 	return TWDR_REG;											
 }
 
-char I2C_Read_Nack()										
+s8_t I2C_Read_Nack()										
 {
 	ENABLE_I2C;
 	CLEAR_IF;
@@ -155,7 +155,7 @@ char I2C_Read_Nack()
 	return TWDR_REG;											
 }
 
-void I2C_Slave_Init(uint8_t slave_address)
+void I2C_Slave_Init(u8_t slave_address)
 {
 	TWAR_REG=slave_address;		
 	ENABLE_I2C;
@@ -163,9 +163,9 @@ void I2C_Slave_Init(uint8_t slave_address)
 	CLEAR_IF;
 }
 
-int8_t I2C_Slave_Listen()
+s8_t I2C_Slave_Listen()
 {
-	uint8_t status;			
+	u8_t status;			
 	while(1)
 	{
 		while(!GETBIT(I2C_CONTROL_REG,I2C_IF));
@@ -180,9 +180,9 @@ int8_t I2C_Slave_Listen()
 			continue;			
 	}
 }
-int8_t I2C_Slave_Receive()
+s8_t I2C_Slave_Receive()
 {
-	uint8_t status;		
+	u8_t status;		
 	ENABLE_I2C;
 	GENERATE_ACK;
 	CLEAR_IF;
@@ -200,9 +200,9 @@ int8_t I2C_Slave_Receive()
 	else
 		return -2;			
 }
-int8_t I2C_Slave_Transmit(char data)
+s8_t I2C_Slave_Transmit(s8_t data)
 {
-	uint8_t status;
+	u8_t status;
 	TWDR_REG=data;			/* Write data to TWDR to be transmitted */
 	ENABLE_I2C;
 	GENERATE_ACK;

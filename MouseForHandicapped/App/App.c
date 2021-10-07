@@ -1,12 +1,5 @@
-#include <stdlib.h>
-#include "../MCAL/DIO/TypeDefs.h"
-#include "../ECUAL/LED/LED_interface.h"
-#include "../ECUAL/Touch/Touch.h"
-#include "../ECUAL/BNO055/BNO055.h"
-#include "../ECUAL/Mouse/Mouse.h"
+
 #include "App_interface.h"
-#include "App_private.h"
-#include "App_config.h"
 
 
 /****
@@ -28,12 +21,12 @@ void App_Init()
 /****
  * Description: Get mouse Direction from Gradient of head 
  * Args: None
- * Return: uint8_t gradient_Direction -> (LEFT, RIGHT, UP, DOWN)
- * Ex: uint8_t direction = App_GetImuGradient();
+ * Return: u8_t gradient_Direction -> (LEFT, RIGHT, UP, DOWN)
+ * Ex: u8_t direction = App_GetImuGradient();
  */				
-uint8_t App_GetImuGradient(void)
+u8_t App_GetImuGradient(void)
 {
-	int16_t absolute_gradient[3]; // current_reading - reference_point
+	s16_t absolute_gradient[3]; // current_reading - reference_point
 	//-- get current imu reading
 	BNO055_ReadEulerAngles(current_reading);
 	//-- compare this reading to calibration point to know imu (head) gradient
@@ -42,7 +35,7 @@ uint8_t App_GetImuGradient(void)
 	absolute_gradient[2] = current_reading[2] - angles[2];
 	//-- decide depending on calculations to which direction mouse should move
 	// get the largest angle of them (sign isn't considered)
-	uint8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
+	u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
 	switch(angle_name)
 	{
 		// head is turned around X-axis
@@ -74,13 +67,13 @@ uint8_t App_GetImuGradient(void)
  * Return: None
  * Ex: App_MoveMouse(LEFT_CLICK);
  */				
-void App_OrderMouse(uint8_t order)
+void App_OrderMouse(u8_t order)
 {
 	switch(order)
 	{
 		case LEFT:			Mouse_MoveLeft  ();		break;
 		case RIGHT:			Mouse_MoveRight ();		break;
-		case UP:			Mouse_MoveUP    ();		break;
+		case UP:			Mouse_MoveUp    ();		break;
 		case DOWN:			Mouse_MoveDown  ();		break;
 		case LEFT_CLICK:	Mouse_LeftClick ();		break;
 		case RIGHT_CLICK:	Mouse_RightClick();		break;
@@ -91,14 +84,14 @@ void App_OrderMouse(uint8_t order)
 /****
  * Description: Get the status of touch sensor -> contact on the head or not
  * Args: None
- * Return: uint8_t state (CONTACT, NOT_CONTACT)
- * Ex: uint8_t state = App_GetTouchSensorState();
+ * Return: u8_t state (CONTACT, NOT_CONTACT)
+ * Ex: u8_t state = App_GetTouchSensorState();
  */				
  
-uint8_t App_GetTouchSensorState(void)
+u8_t App_GetTouchSensorState(void)
 {
 	/* get sensor reading */
-	uint8_t reading = Touch_Read(config);	
+	u8_t reading = Touch_Read(config);	
 	if(reading == HIGH)
 	{
 		LED_TurnOn(LED_GREEN);
@@ -120,7 +113,7 @@ uint8_t App_GetTouchSensorState(void)
  * Return: None
  * Ex: App_GetImuCalibPoint(angles);
  */
-void App_GetImuCalibPoint(float angles[])
+void App_GetImuCalibPoint(s16_t angles[])
 {
 	// get calibration point
 }
@@ -130,15 +123,15 @@ void App_GetImuCalibPoint(float angles[])
 /****
  * Description: check if sensors are calibrated successfully or not
  * Args: None
- * Return: calibration status [CALIBRATED, NOT_CALIBRATED] -> (uint8_t)
- * Ex: uint8_t calib_status = App_GetCalibStatus();
+ * Return: calibration status [CALIBRATED, NOT_CALIBRATED] -> (u8_t)
+ * Ex: u8_t calib_status = App_GetCalibStatus();
  */
-uint8_t App_GetCalibStatus(void)
+u8_t App_GetCalibStatus(void)
 {
-	uint8_t sensor_S = BNO055_GetCalibStat(SYSTEM);
-	uint8_t sensor_G = BNO055_GetCalibStat(GYROSCOPE);
-	uint8_t sensor_A = BNO055_GetCalibStat(ACCELOMETER);
-	uint8_t sensor_M = BNO055_GetCalibStat(MAGNETOMETER);
+	u8_t sensor_S = BNO055_GetCalibStat(SYSTEM);
+	u8_t sensor_G = BNO055_GetCalibStat(GYROSCOPE);
+	u8_t sensor_A = BNO055_GetCalibStat(ACCELOMETER);
+	u8_t sensor_M = BNO055_GetCalibStat(MAGNETOMETER);
 	
 	if( sensor_S>LOW_CALIBRATED && sensor_G>LOW_CALIBRATED && sensor_A>LOW_CALIBRATED && sensor_M>LOW_CALIBRATED )
 	{
@@ -151,13 +144,13 @@ uint8_t App_GetCalibStatus(void)
 
 /*****
  * Description: Get the largest value regardless the signs
- * args: value1 -> (int16_t)
- *		 value2 -> (int16_t)
- *		 value3 -> (int16_t)
- * return: index of the largest value (1 or 2 or 3) -> uint8_t
+ * args: value1 -> (s16_t)
+ *		 value2 -> (s16_t)
+ *		 value3 -> (s16_t)
+ * return: index of the largest value (1 or 2 or 3) -> u8_t
  * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
  */
-static uint8_t App_GetLargestAngle(sint16_t value1,sint16_t value2,sint16_t value3)
+static u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3)
 {
 	value1 = abs(value1);
 	value2 = abs(value2);

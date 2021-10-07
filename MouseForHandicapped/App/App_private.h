@@ -17,13 +17,13 @@ ST_TouchConfig_t config = {0x35,0}; // {portc,pin0} ------- design role violatio
 
 /*****
  * Description: Get the largest value regardless the signs
- * args: value1 -> (sint16_t)
- *		 value2 -> (sint16_t)
- *		 value3 -> (sint16_t)
- * return: index of the largest value (1 or 2 or 3) -> uint8_t
+ * args: value1 -> (s16_t)
+ *		 value2 -> (s16_t)
+ *		 value3 -> (s16_t)
+ * return: index of the largest value (1 or 2 or 3) -> u8_t
  * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
  */
-static uint8_t App_GetLargestAngle(sint16_t value1,sint16_t value2,sint16_t value3);
+static u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3);
 
 
 

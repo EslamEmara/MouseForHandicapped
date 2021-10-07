@@ -56,11 +56,11 @@
 
 	
 	void DIO_write(EN_PORTS_t port,EN_PINS_t pin,EN_DATA_t data );
-	void DIO_writePort(EN_PORTS_t port,uint8_t bin_pins);
+	void DIO_writePort(EN_PORTS_t port,u8_t bin_pins);
 	void DIO_setPin(EN_PORTS_t port,EN_PINS_t pin);
 	void DIO_clearPin(EN_PORTS_t port,EN_PINS_t pin);
 
-	uint8_t DIO_getPin(EN_PORTS_t port,EN_PINS_t pin);
+	u8_t DIO_getPin(EN_PORTS_t port,EN_PINS_t pin);
 	void DIO_toggle(EN_PORTS_t port,EN_PINS_t pin);
 	
 #endif

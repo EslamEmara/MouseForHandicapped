@@ -31,7 +31,7 @@ void Touch_Init(ST_TouchConfig_t config);
 *Return 1 if pressed , 0 otherwise
 *
 */
-uint8_t Touch_Read(ST_TouchConfig_t config);
+u8_t Touch_Read(ST_TouchConfig_t config);
 
 
 

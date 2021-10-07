@@ -76,7 +76,8 @@ waitForK:
 #endif
     rjmp    sofError
 foundK:                         ;[-12]
-;{3, 5} after falling D- edge, average delay: 4 cycles [we want 5 for center sampling]
+;{3, 5} after falling D- edge, average 
+: 4 cycles [we want 5 for center sampling]
 ;we have 1 bit time for setup purposes, then sample again. Numbers in brackets
 ;are cycles from center of first sync (double K) bit after the instruction
     push    r0                  ;[-12]

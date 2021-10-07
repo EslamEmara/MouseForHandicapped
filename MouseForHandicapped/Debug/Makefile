@@ -42,7 +42,6 @@ SUBDIRS :=  \
 ../APP \
 ../MCAL/I2C \
 ../MCAL/DIO \
-../MCAL/TIMER \
 ../MCAL/USB
 
 
@@ -56,7 +55,6 @@ C_SRCS +=  \
 ../main.c \
 ../MCAL/DIO/DIO.c \
 ../MCAL/I2C/I2C.c \
-../MCAL/TIMER/timer.c \
 ../MCAL/USB/oddebug.c \
 ../MCAL/USB/usbdrv.c
 
@@ -77,7 +75,6 @@ ECUAL/Touch/Touch.o \
 main.o \
 MCAL/DIO/DIO.o \
 MCAL/I2C/I2C.o \
-MCAL/TIMER/timer.o \
 MCAL/USB/oddebug.o \
 MCAL/USB/usbdrv.o \
 MCAL/USB/usbdrvasm.o
@@ -91,7 +88,6 @@ ECUAL/Touch/Touch.o \
 main.o \
 MCAL/DIO/DIO.o \
 MCAL/I2C/I2C.o \
-MCAL/TIMER/timer.o \
 MCAL/USB/oddebug.o \
 MCAL/USB/usbdrv.o \
 MCAL/USB/usbdrvasm.o
@@ -105,7 +101,6 @@ ECUAL/Touch/Touch.d \
 main.d \
 MCAL/DIO/DIO.d \
 MCAL/I2C/I2C.d \
-MCAL/TIMER/timer.d \
 MCAL/USB/oddebug.d \
 MCAL/USB/usbdrv.d \
 MCAL/USB/usbdrvasm.d
@@ -119,7 +114,6 @@ ECUAL/Touch/Touch.d \
 main.d \
 MCAL/DIO/DIO.d \
 MCAL/I2C/I2C.d \
-MCAL/TIMER/timer.d \
 MCAL/USB/oddebug.d \
 MCAL/USB/usbdrv.d \
 MCAL/USB/usbdrvasm.d
@@ -188,13 +182,6 @@ MCAL/DIO/DIO.o: ../MCAL/DIO/DIO.c
 	
 
 MCAL/I2C/I2C.o: ../MCAL/I2C/I2C.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega32" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-MCAL/TIMER/timer.o: ../MCAL/TIMER/timer.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega32" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

@@ -8,7 +8,8 @@ MCAL/USB/usbdrvasm.d MCAL/USB/usbdrvasm.o: ../MCAL/USB/usbdrvasm.S \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../MCAL/USB/usbdrv.h ../MCAL/USB/usbconfig.h
+ ../MCAL/USB/usbdrv.h ../MCAL/USB/usbconfig.h ../MCAL/USB/usbdrvasm12.inc \
+ ../MCAL/USB/asmcommon.inc
 
 ../MCAL/USB/usbportability.h:
 
@@ -31,3 +32,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../MCAL/USB/usbdrv.h:
 
 ../MCAL/USB/usbconfig.h:
+
+../MCAL/USB/usbdrvasm12.inc:
+
+../MCAL/USB/asmcommon.inc:

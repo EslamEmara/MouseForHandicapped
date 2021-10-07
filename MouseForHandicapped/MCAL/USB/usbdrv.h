@@ -183,7 +183,8 @@ USB_PUBLIC void usbInit(void);
  */
 USB_PUBLIC void usbPoll(void);
 /* This function must be called at regular intervals from the main loop.
- * Maximum delay between calls is somewhat less than 50ms (USB timeout for
+ * Maximum 
+  between calls is somewhat less than 50ms (USB timeout for
  * accepting a Setup message). Otherwise the device will not be recognized.
  * Please note that debug outputs through the UART take ~ 0.5ms per byte
  * at 19200 bps.

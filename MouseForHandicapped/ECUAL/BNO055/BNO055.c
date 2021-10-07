@@ -51,7 +51,7 @@ EN_FAIL_t BNO055_Init()
 }
 
 
-void BNO055_WriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
+void BNO055_WriteByte(u8_t address, u8_t subAddress, u8_t data)
 {
 	I2C_Master_Start(address);			/*initialize i2c to slave address*/
 	I2C_Master_Write(subAddress);		/*register address*/
@@ -59,18 +59,18 @@ void BNO055_WriteByte(uint8_t address, uint8_t subAddress, uint8_t data)
 	I2C_Repeated_Start(address);          /*end frame with repeated start*/
 }
 
-uint8_t BNO055_ReadByte(uint8_t address, uint8_t subAddress)
+u8_t BNO055_ReadByte(u8_t address, u8_t subAddress)
 {
-	uint8_t data;
+	u8_t data;
 	I2C_Master_Start(address);         
 	I2C_Master_Write(subAddress);	                
 	I2C_Repeated_Start(address);       
 	data =I2C_Read_Ack();                      
 	return data;                             /* Return data read from slave register*/
 }
-void BNO055_ReadBytes(uint8_t address, uint8_t subAddress, uint8_t count, uint8_t * data)
+void BNO055_ReadBytes(u8_t address, u8_t subAddress, u8_t count, u8_t * data)
 {
-	uint8_t data_count = 0;
+	u8_t data_count = 0;
 	I2C_Master_Start(address); 
 	I2C_Master_Write(subAddress);           
 	I2C_Repeated_Start(address) ;
@@ -81,7 +81,7 @@ void BNO055_ReadBytes(uint8_t address, uint8_t subAddress, uint8_t count, uint8_
 	data[count] = I2C_Read_Nack();										/*read last element and sen NACK*/
 }
 EN_CALIBRATION_t BNO055_GetCalibStat(EN_SENSOR_t sensor){
-	 uint8_t calstat = BNO055_ReadByte(BNO055_ADDRESS, BNO055_CALIB_STAT);
+	 u8_t calstat = BNO055_ReadByte(BNO055_ADDRESS, BNO055_CALIB_STAT);
 	 if (sensor == SYSTEM)
 		return ( (0xC0 & calstat) >> 6);									
 	else if (sensor == GYROSCOPE)
@@ -96,90 +96,90 @@ EN_CALIBRATION_t BNO055_GetCalibStat(EN_SENSOR_t sensor){
 }
 /*
 *	Function to read the accelometer data
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the 
 					acceleration in x ,y ,z
 *	void return
 *
 */
 
-void BNO055_ReadAcc(int16_t * destination)
+void BNO055_ReadAcc(s16_t * destination)
 {
-	uint8_t rawData[6];  // x/y/z accel register data stored here
+	u8_t rawData[6];  // x/y/z accel register data stored here
 	BNO055_ReadBytes(BNO055_ADDRESS, BNO055_ACC_DATA_X_LSB, 6, &rawData[0]);  // Read the six raw data registers into data array
-	destination[0] = ((int16_t)rawData[1] << 8) | rawData[0] ;      // Turn the MSB and LSB into a signed 16-bit value
-	destination[1] = ((int16_t)rawData[3] << 8) | rawData[2] ;
-	destination[2] = ((int16_t)rawData[5] << 8) | rawData[4] ;
+	destination[0] = ((s16_t)rawData[1] << 8) | rawData[0] ;      // Turn the MSB and LSB into a signed 16-bit value
+	destination[1] = ((s16_t)rawData[3] << 8) | rawData[2] ;
+	destination[2] = ((s16_t)rawData[5] << 8) | rawData[4] ;
 }
 
 /*
 *	Function to read the gyroscope data
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the 
 					gyroscope in x ,y ,z
 *	void return
 *
 */
-void BNO055_ReadGyro(int16_t * destination)
+void BNO055_ReadGyro(s16_t * destination)
 {
-	uint8_t rawData[6];  // x/y/z gyro register data stored here
+	u8_t rawData[6];  // x/y/z gyro register data stored here
 	BNO055_ReadBytes(BNO055_ADDRESS, BNO055_GYR_DATA_X_LSB, 6, &rawData[0]);  // Read the six raw data registers sequentially into data array
-	destination[0] = ((int16_t)rawData[1] << 8) | rawData[0] ;       // Turn the MSB and LSB into a signed 16-bit value
-	destination[1] = ((int16_t)rawData[3] << 8) | rawData[2] ;
-	destination[2] = ((int16_t)rawData[5] << 8) | rawData[4] ;
+	destination[0] = ((s16_t)rawData[1] << 8) | rawData[0] ;       // Turn the MSB and LSB into a signed 16-bit value
+	destination[1] = ((s16_t)rawData[3] << 8) | rawData[2] ;
+	destination[2] = ((s16_t)rawData[5] << 8) | rawData[4] ;
 }
 /*
 *	Function to read the magnetometer data
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the 
 					magnetometer in x ,y ,z
 *	void return
 *
 */
-void BNO055_ReadMag(int16_t * destination)
+void BNO055_ReadMag(s16_t * destination)
 {
-	uint8_t rawData[6];  // x/y/z gyro register data stored here
+	u8_t rawData[6];  // x/y/z gyro register data stored here
 	BNO055_ReadBytes(BNO055_ADDRESS, BNO055_MAG_DATA_X_LSB, 6, &rawData[0]);  // Read the six raw data registers sequentially into data array
-	destination[0] = ((int16_t)rawData[1] << 8) | rawData[0] ;       // Turn the MSB and LSB into a signed 16-bit value
-	destination[1] = ((int16_t)rawData[3] << 8) | rawData[2] ;
-	destination[2] = ((int16_t)rawData[5] << 8) | rawData[4] ;
+	destination[0] = ((s16_t)rawData[1] << 8) | rawData[0] ;       // Turn the MSB and LSB into a signed 16-bit value
+	destination[1] = ((s16_t)rawData[3] << 8) | rawData[2] ;
+	destination[2] = ((s16_t)rawData[5] << 8) | rawData[4] ;
 }
 
 /*
 *	Function to read the euler andles data from the sensor
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the 
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the 
 					angles in x ,y ,z		(yaw,roll,pitch)
 *	void return
 *
 */
-void BNO055_ReadEulerAngles(int16_t * destination)
+void BNO055_ReadEulerAngles(s16_t * destination)
 {
-	uint8_t rawData[6];  // x/y/z gyro register data stored here
+	u8_t rawData[6];  // x/y/z gyro register data stored here
 	BNO055_ReadBytes(BNO055_ADDRESS, BNO055_EUL_HEADING_LSB, 6, &rawData[0]);  // Read the six raw data registers sequentially into data array
-	destination[0] = ((int16_t)rawData[1] << 8) | rawData[0] ;       // Turn the MSB and LSB into a signed 16-bit value
-	destination[1] = ((int16_t)rawData[3] << 8) | rawData[2] ;
-	destination[2] = ((int16_t)rawData[5] << 8) | rawData[4] ;
+	destination[0] = ((s16_t)rawData[1] << 8) | rawData[0] ;       // Turn the MSB and LSB into a signed 16-bit value
+	destination[1] = ((s16_t)rawData[3] << 8) | rawData[2] ;
+	destination[2] = ((s16_t)rawData[5] << 8) | rawData[4] ;
 }
 
 /*
 *	Function to set accelometer offsets by pre known values for fast calibration
-*	input parameter: int16_t pointer to first element of array of 3 elements that will hold the
+*	input parameter: s16_t pointer to first element of array of 3 elements that will hold the
 						accelometer offsets in x ,y ,z
 */
-void BNO055_SetAccOffsets(int32_t* accel_bias){
+void BNO055_SetAccOffsets(s32_t* accel_bias){
 	
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_X_LSB, (int16_t)accel_bias[0] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_X_MSB, ((int16_t)accel_bias[0] >> 8) & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Y_LSB, (int16_t)accel_bias[1] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Y_MSB, ((int16_t)accel_bias[1] >> 8) & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Z_LSB, (int16_t)accel_bias[2] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Z_MSB, ((int16_t)accel_bias[2] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_X_LSB, (s16_t)accel_bias[0] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_X_MSB, ((s16_t)accel_bias[0] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Y_LSB, (s16_t)accel_bias[1] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Y_MSB, ((s16_t)accel_bias[1] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Z_LSB, (s16_t)accel_bias[2] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_Z_MSB, ((s16_t)accel_bias[2] >> 8) & 0xFF);
 }
 /*
 *	Function to Get accelometer offsets to be used for fast calibration (must be called after FULL_CALIBRATED)
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the
 						accelometer offsets in x ,y ,z
 */
-void BNO055_GetAccOffsets(int32_t* accel_bias){
-	int8_t low = 0;
-	int8_t high = 0;
+void BNO055_GetAccOffsets(s32_t* accel_bias){
+	s8_t low = 0;
+	s8_t high = 0;
 	
 	BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
 	low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ACC_OFFSET_X_LSB);
@@ -198,26 +198,26 @@ void BNO055_GetAccOffsets(int32_t* accel_bias){
 }
 /*
 *	Function to set Gyro offsets by pre known values for fast calibration
-*	input parameter: int16_t pointer to first element of array of 3 elements that will hold the
+*	input parameter: s16_t pointer to first element of array of 3 elements that will hold the
 						Gyro offsets in x ,y ,z
 */
-void BNO055_SetGyroOffsets(int32_t* gyro_bias){
+void BNO055_SetGyroOffsets(s32_t* gyro_bias){
 	
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_X_LSB, (int16_t)gyro_bias[0] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_X_MSB, ((int16_t)gyro_bias[0] >> 8) & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Y_LSB, (int16_t)gyro_bias[1] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Y_MSB, ((int16_t)gyro_bias[1] >> 8) & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Z_LSB, (int16_t)gyro_bias[2] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Z_MSB, ((int16_t)gyro_bias[2] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_X_LSB, (s16_t)gyro_bias[0] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_X_MSB, ((s16_t)gyro_bias[0] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Y_LSB, (s16_t)gyro_bias[1] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Y_MSB, ((s16_t)gyro_bias[1] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Z_LSB, (s16_t)gyro_bias[2] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_Z_MSB, ((s16_t)gyro_bias[2] >> 8) & 0xFF);
 }
 /*
 *	Function to Get Gyro offsets to be used for fast calibration (must be called after FULL_CALIBRATED)
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the
 						Gyro offsets in x ,y ,z
 */
-void BNO055_GetGyroOffsets(int32_t* gyro_bias){
-	int8_t low = 0;
-	int8_t high = 0;
+void BNO055_GetGyroOffsets(s32_t* gyro_bias){
+	s8_t low = 0;
+	s8_t high = 0;
 	BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
 	low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_X_LSB);
 	high = BNO055_ReadByte(BNO055_ADDRESS, BNO055_GYR_OFFSET_X_MSB);
@@ -235,12 +235,12 @@ void BNO055_GetGyroOffsets(int32_t* gyro_bias){
 }
 /*
 *	Function to Get Magnetometer offsets to be used for fast calibration (must be called after FULL_CALIBRATED)
-*	i/o parameter: int16_t pointer to first element of array of 3 elements that will hold the
+*	i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the
 						Magnetometer offsets in x ,y ,z
 */
-void BNO055_GetMagOffsets(int32_t* mag_bias){
-	int8_t low = 0;
-	int8_t high = 0;
+void BNO055_GetMagOffsets(s32_t* mag_bias){
+	s8_t low = 0;
+	s8_t high = 0;
 	BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
 
 	low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_LSB);
@@ -259,51 +259,51 @@ void BNO055_GetMagOffsets(int32_t* mag_bias){
 }
 /*
 *	Function to set Magnetometer offsets by pre known values for fast calibration
-*	input parameter: int16_t pointer to first element of array of 3 elements that will hold the
+*	input parameter: s16_t pointer to first element of array of 3 elements that will hold the
 						Magnetometer offsets in x ,y ,z
 */
-void BNO055_SetMagOffsets(int32_t* mag_bias){
+void BNO055_SetMagOffsets(s32_t* mag_bias){
 	
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_LSB, (int16_t)mag_bias[0] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_MSB, ((int16_t)mag_bias[0] >> 8) & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Y_LSB, (int16_t)mag_bias[1] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Y_MSB, ((int16_t)mag_bias[1] >> 8) & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Z_LSB, (int16_t)mag_bias[2] & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Z_MSB, ((int16_t)mag_bias[2] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_LSB, (s16_t)mag_bias[0] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_MSB, ((s16_t)mag_bias[0] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Y_LSB, (s16_t)mag_bias[1] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Y_MSB, ((s16_t)mag_bias[1] >> 8) & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Z_LSB, (s16_t)mag_bias[2] & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_Z_MSB, ((s16_t)mag_bias[2] >> 8) & 0xFF);
 }
 
 /*
 *	Function to set Accelometer radius by pre known values for fast calibration
-*	input parameter: int32_t variable that holds the radius value
+*	input parameter: s32_t variable that holds the radius value
 */
-void BNO055_SetAccRadius(int32_t accel_radius){
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_LSB, (int16_t)accel_radius & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_MSB, ((int16_t)accel_radius >> 8) & 0xFF);
+void BNO055_SetAccRadius(s32_t accel_radius){
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_LSB, (s16_t)accel_radius & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_MSB, ((s16_t)accel_radius >> 8) & 0xFF);
 }
 /*
 *	Function to Get Accelometer radius to be used for fast calibration (must be called after FULL_CALIBRATED)
-*	output parameter: int16_t variable that holds the radius value of accelometer
+*	output parameter: s16_t variable that holds the radius value of accelometer
 */
-int16_t BNO055_GetAccRadius(){
-	int8_t low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_LSB);
-	int8_t high = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_MSB);
+s16_t BNO055_GetAccRadius(){
+	s8_t low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_LSB);
+	s8_t high = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ACC_RADIUS_MSB);
 	return ((low & 0xFF)| (high<<8));
 }
 /*
 *	Function to set Magnetometer radius by pre known values for fast calibration 
-*	input parameter: int32_t variable that holds the radius value
+*	input parameter: s32_t variable that holds the radius value
 */
-void BNO055_SetMagRadius(int32_t mag_radius){
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_LSB, (int16_t)mag_radius & 0xFF);
-	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_MSB, ((int16_t)mag_radius >> 8) & 0xFF);
+void BNO055_SetMagRadius(s32_t mag_radius){
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_LSB, (s16_t)mag_radius & 0xFF);
+	BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_MSB, ((s16_t)mag_radius >> 8) & 0xFF);
 }
 /*
 *	Function to Get Magnetometer radius to be used for fast calibration (must be called after FULL_CALIBRATED)
-*	output parameter: int16_t variable that holds the radius value of Magnetometer
+*	output parameter: s16_t variable that holds the radius value of Magnetometer
 */
-int16_t BNO055_GetMagRadius(){
-	int8_t low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_LSB);
-	int8_t high = BNO055_ReadByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_MSB);
+s16_t BNO055_GetMagRadius(){
+	s8_t low = BNO055_ReadByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_LSB);
+	s8_t high = BNO055_ReadByte(BNO055_ADDRESS, BNO055_MAG_RADIUS_MSB);
 	return ((low & 0xFF)| (high<<8));
 }
 
@@ -330,7 +330,7 @@ void BNO055_SetCalibratioProfile(ST_BIAS_t bias){
 *		return 
 */
 EN_FAIL_t BNO055_SelfTest(){
-	uint8_t selftest = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ST_RESULT);	
+	u8_t selftest = BNO055_ReadByte(BNO055_ADDRESS, BNO055_ST_RESULT);	
 	if(!(selftest & 0x01)) {
 
 		return ACCELOMETER_FAIL;                /*acc fails*/

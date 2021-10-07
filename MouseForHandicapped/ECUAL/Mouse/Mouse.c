@@ -39,11 +39,11 @@ PROGMEM const char usbHidReportDescriptor[52] = { /* USB report descriptor, size
 	0xC0,                          // END COLLECTION
 };
 
-static report_t reportBuffer;
-static int      sinus = 7 << 6, cosinus = 0;
-static unsigned char    idleRate;   /* repeat rate for keyboards, never used for mice */
+report_t reportBuffer;
+int      sinus = 7 << 6, cosinus = 0;
+unsigned char    idleRate;   /* repeat rate for keyboards, never used for mice */
 
-static void advanceCircleByFixedAngle(void)
+void advanceCircleByFixedAngle(void)
 {
 	char    d;
 
@@ -99,7 +99,7 @@ void Mouse_init (void) {
 	 i = 0;
 	 while(--i){             /* fake USB disconnect for > 250 ms */
 	   wdt_reset();
-	   _delay_ms(1);
+	  _delay_ms(1);
 	  }
 	 usbDeviceConnect();
 	 sei();

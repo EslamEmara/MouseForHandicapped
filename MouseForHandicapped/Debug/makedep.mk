@@ -18,8 +18,6 @@ MCAL\DIO\DIO.c
 
 MCAL\I2C\I2C.c
 
-MCAL\TIMER\timer.c
-
 MCAL\USB\oddebug.c
 
 MCAL\USB\usbdrv.c
