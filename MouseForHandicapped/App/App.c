@@ -15,7 +15,7 @@ void App_Init()
 	LED_Init(LED_GREEN);
 	BNO055_Init();
 	Mouse_init();
-	Touch_Init(config);
+	Touch_Init(TouchSensor_config);
 }
 
 /****
@@ -91,7 +91,7 @@ void App_OrderMouse(u8_t order)
 u8_t App_GetTouchSensorState(void)
 {
 	/* get sensor reading */
-	u8_t reading = Touch_Read(config);	
+	u8_t reading = Touch_Read(TouchSensor_config);	
 	if(reading == HIGH)
 	{
 		LED_TurnOn(LED_GREEN);

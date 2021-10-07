@@ -13,7 +13,7 @@
 //-------- private config ----------
 //----- Touch Sensor config ----------
 //ST_TouchConfig_t config = {SENSOR_PORT,SENSOR_PIN};
-ST_TouchConfig_t config = {0x35,0}; // {portc,pin0} ------- design rule violation
+ST_TouchConfig_t TouchSensor_config = {0x35,0}; // {portc,pin0} ------- design rule violation
 
 /*****
  * Description: Get the largest value regardless the signs
