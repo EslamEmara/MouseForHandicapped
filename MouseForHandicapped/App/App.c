@@ -30,9 +30,9 @@ u8_t App_GetImuGradient(void)
 	//-- get current imu reading
 	BNO055_ReadEulerAngles(current_reading);
 	//-- compare this reading to calibration point to know imu (head) gradient
-	absolute_gradient[0] = current_reading[0] - angles[0];
-	absolute_gradient[1] = current_reading[1] - angles[1];
-	absolute_gradient[2] = current_reading[2] - angles[2];
+	absolute_gradient[0] = current_reading[0] - reference_angles[0];
+	absolute_gradient[1] = current_reading[1] - reference_angles[1];
+	absolute_gradient[2] = current_reading[2] - reference_angles[2];
 	//-- decide depending on calculations to which direction mouse should move
 	// get the largest angle of them (sign isn't considered)
 	u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
@@ -111,11 +111,11 @@ u8_t App_GetTouchSensorState(void)
  * Description: Get initial point that the others are measured relative to (calibration point)
  * Args: array of 3 elements[x,y,z] (float*)
  * Return: None
- * Ex: App_GetImuCalibPoint(angles);
+ * Ex: App_GetImuCalibPoint(reference_angles);
  */
-void App_GetImuCalibPoint(s16_t angles[])
+void App_GetImuCalibPoint(s16_t reference_angles[])
 {
-	// get calibration point
+	BNO055_ReadEulerAngles(reference_angles);
 }
 
 
@@ -150,7 +150,7 @@ u8_t App_GetCalibStatus(void)
  * return: index of the largest value (1 or 2 or 3) -> u8_t
  * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
  */
-static u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3)
+u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3)
 {
 	value1 = abs(value1);
 	value2 = abs(value2);

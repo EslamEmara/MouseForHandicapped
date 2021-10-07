@@ -4,9 +4,12 @@
 #include "APP/App_interface.h"
 
 extern report_t reportBuffer;
+#define OPENED  1
+#define CLOSED  0
 
 int main()
 {
+	u8_t key = OPENED;
 	/* Init application */
 	App_Init();
 	
@@ -30,10 +33,14 @@ int main()
 		
 		if(state == CONTACT)
 		{
-			// Get calibration point from imu
-			App_GetImuCalibPoint(angles);
+			// enter this block once to get the reference point
+			if(key == OPENED)
+			{
+				// Get reference point from imu
+				App_GetImuCalibPoint(reference_angles);
+				key = CLOSED;
 			
-			
+			}
 			// Get current gradient of imu (required mouse motion direction)
 			u8_t motion_direction = App_GetImuGradient();
 			// move mouse

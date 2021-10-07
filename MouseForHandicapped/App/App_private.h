@@ -13,7 +13,7 @@
 //-------- private config ----------
 //----- Touch Sensor config ----------
 //ST_TouchConfig_t config = {SENSOR_PORT,SENSOR_PIN};
-ST_TouchConfig_t config = {0x35,0}; // {portc,pin0} ------- design role violation
+ST_TouchConfig_t config = {0x35,0}; // {portc,pin0} ------- design rule violation
 
 /*****
  * Description: Get the largest value regardless the signs
@@ -23,7 +23,7 @@ ST_TouchConfig_t config = {0x35,0}; // {portc,pin0} ------- design role violatio
  * return: index of the largest value (1 or 2 or 3) -> u8_t
  * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
  */
-static u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3);
+u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3);
 
 
 

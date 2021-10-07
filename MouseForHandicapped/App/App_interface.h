@@ -16,7 +16,7 @@
 
 //------ Global Variables --------
  // X,Y,Z -> Roll,pitch,yaw
-s16_t angles[3];
+s16_t reference_angles[3];
 s16_t current_reading[3];
 
 
@@ -55,13 +55,6 @@ void App_Init();
 u8_t App_GetImuGradient(void);
 
 
-/****
- * Description: Move Mouse in certain direction
- * Args: movement (LEFT, RIGHT, UP, DOWN) -> see App_config.h
- * Return: None
- * Ex: App_MoveMouse(LEFT);
- */				
-void App_MoveMouse(u8_t movement);
 
 
 /****
@@ -78,9 +71,9 @@ u8_t App_GetTouchSensorState(void);
  * Description: Get initial point that the others are measured relative to (calibration point)
  * Args: array of 3 elements[x,y,z] (float*)
  * Return: None
- * Ex: App_GetImuCalibPoint(angles);
+ * Ex: App_GetImuCalibPoint(reference_angles);
  */	
-void App_GetImuCalibPoint(s16_t angles[]);
+void App_GetImuCalibPoint(s16_t reference_angles[]);
 
 
 /****
@@ -95,8 +88,13 @@ u8_t App_GetCalibStatus(void);
 /* calibrate and set leds based on touch sensor readings*/					
 
 
-
-
+/****
+ * Description: order Mouse to do a certain action
+ * Args: order (LEFT, RIGHT, UP, DOWN, LEFT_CLICK, RIGHT_CLICK) -> see App_config.h
+ * Return: None
+ * Ex: App_MoveMouse(LEFT_CLICK);
+ */		
+void App_OrderMouse(u8_t order);
 
 
 #endif
