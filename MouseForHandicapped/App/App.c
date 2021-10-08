@@ -1,6 +1,7 @@
 
 #include "App_interface.h"
 
+ST_TouchConfig_t TouchSensor_config = {0x35,0};
 
 /****
  * Description: Initialization of Different Application components

@@ -1,5 +1,5 @@
 
-
+#define F_CPU  12000000
 #include "MCAL/DIO/TypeDefs.h"
 #include "APP/App_interface.h"
 
