@@ -41,6 +41,7 @@ int main()
 				key = CLOSED;
 			
 			}
+			
 			// Get current gradient of imu (required mouse motion direction)
 			u8_t motion_direction = App_GetImuGradient();
 			// move mouse

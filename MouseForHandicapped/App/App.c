@@ -27,6 +27,9 @@ void App_Init()
  */				
 u8_t App_GetImuGradient(void)
 {
+	static u16_t period = 1000;
+	// define cursor speed
+	Delay_ms_independent(period);
 	s16_t absolute_gradient[3]; // current_reading - reference_point
 	//-- get current imu reading
 	BNO055_ReadEulerAngles(current_reading);
@@ -37,6 +40,21 @@ u8_t App_GetImuGradient(void)
 	//-- decide depending on calculations to which direction mouse should move
 	// get the largest angle of them (sign isn't considered)
 	u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
+	switch (absolute_gradient[angle_name])
+	{
+		case 0 ... 15:
+			period = 1000;
+			break;
+		case 16 ... 40:
+			period = 400;
+			break;
+		case 41 ... 60:
+			period = 200;
+			break;
+		default: // larger than 60
+			period = 0;
+			break;
+	}
 	switch(angle_name)
 	{
 		// head is turned around X-axis

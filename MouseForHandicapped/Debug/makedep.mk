@@ -6,6 +6,8 @@ APP\App.c
 
 ECUAL\BNO055\BNO055.c
 
+ECUAL\Delay\Delay.c
+
 ECUAL\LED\LED_program.c
 
 ECUAL\Mouse\Mouse.c

@@ -141,6 +141,15 @@
     <Compile Include="ECUAL\BNO055\BNO055.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ECUAL\Delay\Delay.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\Delay\Delay_config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ECUAL\Delay\Delay_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ECUAL\LED\LED_interface.h">
       <SubType>compile</SubType>
     </Compile>
@@ -224,6 +233,7 @@
     <Folder Include="ECUAL\LED\" />
     <Folder Include="ECUAL\Mouse" />
     <Folder Include="ECUAL\BNO055" />
+    <Folder Include="ECUAL\Delay" />
     <Folder Include="ECUAL\Touch" />
     <Folder Include="MCAL" />
     <Folder Include="ECUAL" />
