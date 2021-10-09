@@ -16,6 +16,7 @@
 
 //------ Global Variables --------
  // X,Y,Z -> Roll,pitch,yaw
+ // X,Y,Z -> yaw,Roll,pitch
 s16_t reference_angles[3];
 s16_t current_reading[3];
 
@@ -73,7 +74,7 @@ u8_t App_GetTouchSensorState(void);
  * Return: None
  * Ex: App_GetImuCalibPoint(reference_angles);
  */	
-void App_GetImuCalibPoint(s16_t reference_angles[]);
+void App_GetImuCalibPoint(void);
 
 
 /****

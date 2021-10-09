@@ -4,11 +4,12 @@
 
 #ifndef APP_PRIVATE_H_
 #define APP_PRIVATE_H_
-
+ // X,Y,Z -> Roll,pitch,yaw
+ // X,Y,Z -> yaw,Roll,pitch
 //------ Private Macros ------------
-#define ROLL  1
-#define PITCH 2
-#define YAW   3
+#define ROLL   2
+#define PITCH  3
+#define YAW    1
 
 //-------- private config ----------
 //----- Touch Sensor config ----------

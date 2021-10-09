@@ -31,9 +31,9 @@ u8_t App_GetImuGradient(void)
 	//-- get current imu reading
 	BNO055_ReadEulerAngles(current_reading);
 	//-- compare this reading to calibration point to know imu (head) gradient
-	absolute_gradient[0] = current_reading[0] - reference_angles[0];
-	absolute_gradient[1] = current_reading[1] - reference_angles[1];
-	absolute_gradient[2] = current_reading[2] - reference_angles[2];
+	absolute_gradient[0] = current_reading[0] - reference_angles[0]; // YAW
+	absolute_gradient[1] = current_reading[1] - reference_angles[1]; // ROLL
+	absolute_gradient[2] = current_reading[2] - reference_angles[2]; // PITCH
 	//-- decide depending on calculations to which direction mouse should move
 	// get the largest angle of them (sign isn't considered)
 	u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
@@ -114,7 +114,7 @@ u8_t App_GetTouchSensorState(void)
  * Return: None
  * Ex: App_GetImuCalibPoint(reference_angles);
  */
-void App_GetImuCalibPoint(s16_t reference_angles[])
+void App_GetImuCalibPoint(void)
 {
 	BNO055_ReadEulerAngles(reference_angles);
 }
@@ -152,7 +152,7 @@ u8_t App_GetCalibStatus(void)
  * Ex: index = App_GetLargestAngle(54,21,100); -> index=3
  */
 u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3)
-{
+{ // yaw roll pitch
 	value1 = abs(value1);
 	value2 = abs(value2);
 	value3 = abs(value3);

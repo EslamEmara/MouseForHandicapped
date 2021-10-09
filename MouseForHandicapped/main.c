@@ -37,7 +37,7 @@ int main()
 			if(key == OPENED)
 			{
 				// Get reference point from imu
-				App_GetImuCalibPoint(reference_angles);
+				App_GetImuCalibPoint();
 				key = CLOSED;
 			
 			}
