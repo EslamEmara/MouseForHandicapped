@@ -40,6 +40,8 @@ u8_t App_GetImuGradient(void)
 	//-- decide depending on calculations to which direction mouse should move
 	// get the largest angle of them (sign isn't considered)
 	u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
+	
+	// change period to set cursor speed 
 	switch (absolute_gradient[angle_name])
 	{
 		case 0 ... 15:
