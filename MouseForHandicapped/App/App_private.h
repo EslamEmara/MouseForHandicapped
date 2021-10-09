@@ -11,6 +11,12 @@
 #define PITCH  3
 #define YAW    1
 
+//------- Flags Status ----------
+#define ENABLED   1
+#define DISABLED  0
+
+
+
 //-------- private config ----------
 //----- Touch Sensor config ----------
 //ST_TouchConfig_t config = {SENSOR_PORT,SENSOR_PIN};

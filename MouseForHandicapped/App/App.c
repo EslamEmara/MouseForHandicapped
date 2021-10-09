@@ -1,8 +1,13 @@
 
 #include "App_interface.h"
 
-ST_TouchConfig_t TouchSensor_config = {0x35,0};
 
+//---- Global Variables ------------------
+ST_TouchConfig_t TouchSensor_config = {0x35,0};// {portc,pin0} ------- design rule violation
+//------ Flags ----------
+u8_t RIGHT_CLICK_FLAG = ENABLED;
+u8_t LEFT_CLICK_FLAG = ENABLED;
+//----------------------------------------------------
 /****
  * Description: Initialization of Different Application components
  * Args: None
@@ -27,7 +32,8 @@ void App_Init()
  */				
 u8_t App_GetImuGradient(void)
 {
-	static u16_t period = 1000;
+	static u16_t period = 1000; // to control cursor speed with
+	
 	// define cursor speed
 	Delay_ms_independent(period);
 	s16_t absolute_gradient[3]; // current_reading - reference_point
@@ -44,37 +50,55 @@ u8_t App_GetImuGradient(void)
 	// change period to set cursor speed 
 	switch (absolute_gradient[angle_name])
 	{
-		case 0 ... 15:
+		// 10 -> threshold
+		case 10 ... 20:
 			period = 1000;
 			break;
-		case 16 ... 40:
+		case 21 ... 35:
 			period = 400;
-			break;
-		case 41 ... 60:
-			period = 200;
 			break;
 		default: // larger than 60
 			period = 0;
 			break;
 	}
+	
+	// take action on mouse according to angle
 	switch(angle_name)
 	{
 		// head is turned around X-axis
 		case ROLL:
 			// positive angle > threshold?
-			if(absolute_gradient[0] >= THRESHOLD_X ){ return RIGHT_CLICK; }
+			if(absolute_gradient[0] >= THRESHOLD_X && RIGHT_CLICK_FLAG)
+			{ 
+				// disable flag to stop sending this signal multiple times
+				RIGHT_CLICK_FLAG = DISABLED;
+				// small angle (<25) -> single right click
+				if (absolute_gradient[angle_name] < 25)
+				{
+					return RIGHT_CLICK;
+				}
+				// larger angle -> double right click
+				 return DOUBLE_RIGHT_CLICK;
+			}
 			// negative angle > threshold?
-			else if ( (-1*absolute_gradient[0]) >= THRESHOLD_X ){ return LEFT_CLICK; }
+			else if ( (-1*absolute_gradient[0]) >= THRESHOLD_X && LEFT_CLICK_FLAG)
+			{
+				// disable flag to stop sending this signal multiple times
+				 LEFT_CLICK_FLAG = DISABLED;
+				 return LEFT_CLICK; 
+			}
 			break;
 		// head is turned around Y-axis
 		case PITCH:
-			if(absolute_gradient[1] >= THRESHOLD_Y){ return UP; }
-			else if ( (-1*absolute_gradient[1]) >= THRESHOLD_Y ){ return DOWN; }
+		// enable flags so the signal can be sent again
+			if(absolute_gradient[1] >= THRESHOLD_Y){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return UP; }
+			else if ( (-1*absolute_gradient[1]) >= THRESHOLD_Y ){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return DOWN; }
 			break;
 		// head is turned around Z-axis
 		case YAW:
-			if(absolute_gradient[2] >= THRESHOLD_Z){ return RIGHT; }
-			else if ( (-1*absolute_gradient[2]) >= THRESHOLD_Z ){ return LEFT; }
+		// enable flags so the signal can be sent again
+			if(absolute_gradient[2] >= THRESHOLD_Z){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return RIGHT; }
+			else if ( (-1*absolute_gradient[2]) >= THRESHOLD_Z ){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return LEFT; }
 			break;
 	}
 	//-- no head motion 
@@ -98,6 +122,11 @@ void App_OrderMouse(u8_t order)
 		case DOWN:			Mouse_MoveDown  ();		break;
 		case LEFT_CLICK:	Mouse_LeftClick ();		break;
 		case RIGHT_CLICK:	Mouse_RightClick();		break;
+		case DOUBLE_RIGHT_CLICK:
+							Mouse_RightClick();
+							Delay_ms_independent(1);
+							Mouse_RightClick();
+							break;
 		case NOTHING:		/* do nothing */		break;
 	}
 }
