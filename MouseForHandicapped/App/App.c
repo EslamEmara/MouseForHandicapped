@@ -48,7 +48,7 @@ u8_t App_GetImuGradient(void)
 	u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
 	
 	// change period to set cursor speed 
-	switch (absolute_gradient[angle_name])
+	switch (absolute_gradient[angle_name-1])
 	{
 		// 10 -> threshold
 		case 10 ... 20:
@@ -68,7 +68,7 @@ u8_t App_GetImuGradient(void)
 		// head is turned around X-axis
 		case ROLL:
 			// positive angle > threshold?
-			if(absolute_gradient[0] >= THRESHOLD_X && RIGHT_CLICK_FLAG)
+			if(absolute_gradient[angle_name-1] >= THRESHOLD_X && RIGHT_CLICK_FLAG)
 			{ 
 				// disable flag to stop sending this signal multiple times
 				RIGHT_CLICK_FLAG = DISABLED;
@@ -81,7 +81,7 @@ u8_t App_GetImuGradient(void)
 				 return DOUBLE_RIGHT_CLICK;
 			}
 			// negative angle > threshold?
-			else if ( (-1*absolute_gradient[0]) >= THRESHOLD_X && LEFT_CLICK_FLAG)
+			else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_X && LEFT_CLICK_FLAG)
 			{
 				// disable flag to stop sending this signal multiple times
 				 LEFT_CLICK_FLAG = DISABLED;
@@ -91,14 +91,14 @@ u8_t App_GetImuGradient(void)
 		// head is turned around Y-axis
 		case PITCH:
 		// enable flags so the signal can be sent again
-			if(absolute_gradient[1] >= THRESHOLD_Y){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return UP; }
-			else if ( (-1*absolute_gradient[1]) >= THRESHOLD_Y ){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return DOWN; }
+			if(absolute_gradient[angle_name-1] >= THRESHOLD_Y){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return UP; }
+			else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Y ){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return DOWN; }
 			break;
 		// head is turned around Z-axis
 		case YAW:
 		// enable flags so the signal can be sent again
-			if(absolute_gradient[2] >= THRESHOLD_Z){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return RIGHT; }
-			else if ( (-1*absolute_gradient[2]) >= THRESHOLD_Z ){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return LEFT; }
+			if(absolute_gradient[angle_name-1] >= THRESHOLD_Z){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return RIGHT; }
+			else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Z ){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return LEFT; }
 			break;
 	}
 	//-- no head motion 

@@ -10,19 +10,30 @@ time.sleep(2)
 
 while(True):
 
-    data = arduino.readline()
-    data = data.decode('UTF-8')
-    print(data)
-
-    if ("LEFT" in data):
+    order_data = arduino.readline()
+    order_data = order_data.decode('UTF-8')
+    print(order_data)
+    
+    speed_data = arduino.readline()
+    speed_data = speed_data.decode('UTF-8')
+    print(speed_data)
+    
+    if ("LEFT" in order_data):
         pyautogui.moveRel(-10, 0, duration = 0)
-    if ("RIGHT" in data):
+    elif ("RIGHT" in order_data):
         pyautogui.moveRel(10, 0, duration = 0)
-    if ("UP" in data):
+    elif ("UP" in order_data):
         pyautogui.moveRel(0, -10, duration = 0)
-    if ("DOWN" in data):
+    elif ("DOWN" in order_data):
         pyautogui.moveRel(0, 10, duration = 0)
-    if ("LCLICK" in data):
+    elif ("LCLICK" in order_data):
         pyautogui.click(pyautogui.position())
-    if ("RCLICK" in data):
+    elif ("RCLICK" in order_data):
         pyautogui.click(button='right')
+        
+    elif ("DRCLICK" in order_data):
+        pyautogui.click(button='right')
+        pyautogui.click(button='right')
+        
+    else:
+        pass
