@@ -31,9 +31,9 @@ while(True):
     elif ("RCLICK" in order_data):
         pyautogui.click(button='right')
         
-    elif ("DRCLICK" in order_data):
-        pyautogui.click(button='right')
-        pyautogui.click(button='right')
+    elif ("DLCLICK" in order_data):
+        pyautogui.click(pyautogui.position())
+        pyautogui.click(pyautogui.position())
         
     else:
         pass

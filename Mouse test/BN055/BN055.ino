@@ -9,8 +9,8 @@
 #define THRESHOLD_Y  20 // 10 angles
 #define THRESHOLD_Z  20  // 10 angles
 
-u8_t RIGHT_CLICK_FLAG = 1;
-u8_t LEFT_CLICK_FLAG = 1;
+u8_t RIGHT_CLICK_FLAG = ENABLED;
+u8_t LEFT_CLICK_FLAG = ENABLED;
 
 u16_t cursor_speed = 0;
 
@@ -24,7 +24,7 @@ s16_t current_reading[3] = {0,0,0};
 #define RIGHT       3
 #define LEFT_CLICK    4
 #define RIGHT_CLICK   5
-#define DOUBLE_RIGHT_CLICK 6
+#define DOUBLE_LEFT_CLICK 6
 #define NOTHING     255
 
 /* Angles */
@@ -83,48 +83,56 @@ u8_t App_GetImuGradient(void)
     case 41 ... 60:
       cursor_speed = 25;
       break;
-    default: // larger than 60
+    case 61 ... 90: // larger than 60
       cursor_speed = 60;
+      break;
+    default:
+      // do nothing
       break;
   }
   
   // take action on mouse according to angle
   switch(angle_name)
   {
-    // head is turned around X-axis
+    // head is turned around X-axis (RIGHT_CLICK, LEFT_CLICK, DOUBLE_LEFT_CLICK)
     case ROLL:
       // positive angle > threshold?
-      if(absolute_gradient[0] >= THRESHOLD_X && RIGHT_CLICK_FLAG)
+      if(absolute_gradient[angle_name-1] >= THRESHOLD_X && RIGHT_CLICK_FLAG)
       { 
         // disable flag to stop sending this signal multiple times
         RIGHT_CLICK_FLAG = DISABLED;
-        // small angle (<25) -> single right click
-        if (absolute_gradient[angle_name-1] < 25)
-        {
-          return RIGHT_CLICK;
-        }
-        // larger angle -> double right click
-         return DOUBLE_RIGHT_CLICK;
+        // enable left click
+        LEFT_CLICK_FLAG = ENABLED;
+        
+        return RIGHT_CLICK;
+        
       }
       // negative angle > threshold?
       else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_X && LEFT_CLICK_FLAG)
       {
         // disable flag to stop sending this signal multiple times
-         LEFT_CLICK_FLAG = DISABLED;
-         return LEFT_CLICK; 
+        LEFT_CLICK_FLAG = DISABLED;
+        // enable right click
+        RIGHT_CLICK_FLAG = ENABLED;
+        if (absolute_gradient[angle_name-1] < 30)
+        {
+           return LEFT_CLICK; 
+        }
+         // larger angle -> double left click
+         return DOUBLE_LEFT_CLICK;
       }
       break;
-    // head is turned around Y-axis
+    // head is turned around Y-axis (UP, DOWN)
     case PITCH:
     // enable flags so the signal can be sent again
-      if(absolute_gradient[angle_name-1] >= THRESHOLD_Y){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return UP; }
-      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Y ){ RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return DOWN; }
+      if(absolute_gradient[angle_name-1] >= THRESHOLD_Y){ RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return UP; }
+      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Y ){ RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return DOWN; }
       break;
-    // head is turned around Z-axis
+    // head is turned around Z-axis (Left, Right)
     case YAW:
     // enable flags so the signal can be sent again
-      if(absolute_gradient[angle_name-1] >= THRESHOLD_Z){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return RIGHT; }
-      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Z ){RIGHT_CLICK_FLAG = ENABLED; RIGHT_CLICK_FLAG = ENABLED; return LEFT; }
+      if(absolute_gradient[angle_name-1] >= THRESHOLD_Z){RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return RIGHT; }
+      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Z ){RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return LEFT; }
       break;
   }
   //-- no head motion 
@@ -143,8 +151,8 @@ void App_OrderMouse(u8_t order)
     case DOWN:        Serial.println("DOWN"); Serial.println(cursor_speed);  break;
     case LEFT_CLICK:  Serial.println("LCLICK");   break;
     case RIGHT_CLICK: Serial.println("RCLICK");   break;
-    case DOUBLE_RIGHT_CLICK:
-              Serial.println("DRCLICK");
+    case DOUBLE_LEFT_CLICK:
+              Serial.println("DLCLICK");
               break;
     case NOTHING:     Serial.println("STOP");   break;
   }
