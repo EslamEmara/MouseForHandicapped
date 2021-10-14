@@ -59,16 +59,28 @@ u8_t App_GetLargestAngle(s16_t value1,s16_t value2,s16_t value3)
 
 
 
-
 u8_t App_GetImuGradient(void)
 {
   s16_t absolute_gradient[3]; // current_reading - reference_point
   //-- get current imu reading
   BNO055_ReadEulerAngles(current_reading);
   //-- compare this reading to calibration point to know imu (head) gradient
-  absolute_gradient[0] = current_reading[0] - reference_angles[0];
-  absolute_gradient[1] = current_reading[1] - reference_angles[1];
-  absolute_gradient[2] = current_reading[2] - reference_angles[2];
+  absolute_gradient[0] = current_reading[0] - reference_angles[0];   
+  if (absolute_gradient[0] < 0 ){
+     absolute_gradient[0] +=360;
+  }
+  absolute_gradient[1] = current_reading[1] - reference_angles[1]; 
+    if (absolute_gradient[1] < 0 ){
+     absolute_gradient[1] +=360;
+  }   
+  absolute_gradient[2] = current_reading[2] - reference_angles[2]; 
+    if (absolute_gradient[2] < 0 ){
+     absolute_gradient[2] +=360;
+  }
+  Serial.println(absolute_gradient[0]);
+  Serial.println(absolute_gradient[1]);
+  Serial.println(absolute_gradient[2]);
+  Serial.println("__________________________");
   //-- decide depending on calculations to which direction mouse should move
   // get the largest angle of them (sign isn't considered)
   u8_t angle_name = App_GetLargestAngle(absolute_gradient[0],absolute_gradient[1],absolute_gradient[2]);
@@ -78,13 +90,13 @@ u8_t App_GetImuGradient(void)
   {
     // 20 -> threshold
     case 20 ... 40:
-      cursor_speed = 10;
+      cursor_speed = 1;
       break;
     case 41 ... 60:
-      cursor_speed = 25;
+      cursor_speed = 2;
       break;
     case 61 ... 90: // larger than 60
-      cursor_speed = 60;
+      cursor_speed = 3;
       break;
     default:
       // do nothing
@@ -141,28 +153,28 @@ u8_t App_GetImuGradient(void)
 
 
 void App_OrderMouse(u8_t order)
-{
+{/*
   switch(order)
   {
     // cursor speed is u16_t
-    case LEFT:        Serial.println("LEFT"); Serial.println(cursor_speed);  break;
-    case RIGHT:       Serial.println("RIGHT"); Serial.println(cursor_speed);   break;
-    case UP:          Serial.println("UP"); Serial.println(cursor_speed);  break;
-    case DOWN:        Serial.println("DOWN"); Serial.println(cursor_speed);  break;
+    case LEFT:        Serial.print("LEFT"); Serial.println(cursor_speed);  break;
+    case RIGHT:       Serial.print("RIGHT"); Serial.println(cursor_speed);   break;
+    case UP:          Serial.print("UP"); Serial.println(cursor_speed);  break;
+    case DOWN:        Serial.print("DOWN"); Serial.println(cursor_speed);  break;
     case LEFT_CLICK:  Serial.println("LCLICK");   break;
     case RIGHT_CLICK: Serial.println("RCLICK");   break;
     case DOUBLE_LEFT_CLICK:
               Serial.println("DLCLICK");
               break;
     case NOTHING:     Serial.println("STOP");   break;
-  }
+  }*/
 }
 
 u8_t App_SetReference(){
   if (digitalRead(8) == HIGH){
     delay(2000);
     if (digitalRead(8) == HIGH){
-      BNO055_ReadEulerAngles(reference_angles);
+      BNO055_ReadEulerAngles(reference_angles);       // -100 , -50 , 0
       return 1;
     }
   }

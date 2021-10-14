@@ -1,15 +1,38 @@
 
 #include "BNO055.h"
 #include <Wire.h>
+#include "Arduino.h"
 
 
 // I2C read/write functions for the BNO055 sensor
 EN_FAIL_t BNO055_Init(){
       Wire.begin();
+      uint8_t id = BNO055_ReadByte(BNO055_ADDRESS,BNO055_CHIP_ID);
+      if (id != 0xA0) {
+         delay(1000); // hold on for boot
+         id = BNO055_ReadByte(BNO055_ADDRESS,BNO055_CHIP_ID);
+         if (id != 0xA0) {
+           Serial.println("Error1");
+          }
+      }
       BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
-      // Select page 1 to configure sensors
-      BNO055_WriteByte(BNO055_ADDRESS, BNO055_PAGE_ID, PAGE_1);
+      BNO055_WriteByte(BNO055_ADDRESS,BNO055_SYS_TRIGGER, 0x20);
+      delay(30);
+      while (BNO055_ReadByte(BNO055_ADDRESS,BNO055_CHIP_ID) != 0xA0) {
+        Serial.println("Error2");
+        delay(10);
+      }
+      delay(50);
+      BNO055_WriteByte(BNO055_ADDRESS, BNO055_PWR_MODE, PWR_MODE );
+      BNO055_WriteByte(BNO055_ADDRESS, BNO055_PAGE_ID, PAGE_0);
+      BNO055_WriteByte(BNO055_ADDRESS,BNO055_SYS_TRIGGER, 0x0);
+      delay(10);
+
+      BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, OP_MODE  );
+      delay(20);
+
       // Configure ACC
+      /*
       BNO055_WriteByte(BNO055_ADDRESS, BNO055_ACC_CONFIG, ACC_CONFIGS );
       // Configure GYR
       BNO055_WriteByte(BNO055_ADDRESS, BNO055_GYRO_CONFIG_0, GYRO_BW_RANGE );
@@ -26,16 +49,15 @@ EN_FAIL_t BNO055_Init(){
       BNO055_WriteByte(BNO055_ADDRESS, BNO055_PWR_MODE, PWR_MODE );
       // Select BNO055 system operation mode
       BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, OP_MODE  );
-      
+      */
       if (BNO055_SelfTest() != BNO055_SUCCESS){             /*if self test didn't pass on all sensors*/
         return BNO055_SelfTest();
       }
-     /* while (1){
-        if (BNO055_GetCalibStat(SYSTEM) > LOW_CALIBRATED && BNO055_GetCalibStat(GYROSCOPE) > LOW_CALIBRATED){
-          if(BNO055_GetCalibStat(MAGNETOMETER) > LOW_CALIBRATED )
-            break;
-        }
-      }*/
+      while (1){
+        Serial.println("Calibrate");
+        if(BNO055_GetCalibStat(MAGNETOMETER) == FULL_CALIBRATED )
+          break;
+      }
       return BNO055_SUCCESS;
 }
 void BNO055_WriteByte( unsigned char address, unsigned char subAddress, unsigned char data )
@@ -138,11 +160,12 @@ void BNO055_ReadMag(s16_t * destination)
 */
 void BNO055_ReadEulerAngles(s16_t * destination)
 {
+
   u8_t rawData[6];  // x/y/z gyro register data stored here
   BNO055_ReadBytes(BNO055_ADDRESS, BNO055_EUL_HEADING_LSB, 6, &rawData[0]);   // Read the six raw data registers sequentially into data array
-  destination[0] = (((s16_t)rawData[1] << 8) | rawData[0])  /16.0;      
-  destination[1] = (((s16_t)rawData[3] << 8) | rawData[2])  /16.0;
-  destination[2] = (((s16_t)rawData[5] << 8) | rawData[4])  /16.0 ;
+  destination[0] = ((((s16_t)rawData[1] << 8) | rawData[0])  /16.0);      
+  destination[1] = ((((s16_t)rawData[3] << 8) | rawData[2])  /16.0)+180.0;
+  destination[2] = ((((s16_t)rawData[5] << 8) | rawData[4])  /16.0 )+180.0;
 }
 
 /*
