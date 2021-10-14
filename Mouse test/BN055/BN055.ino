@@ -11,6 +11,7 @@
 
 u8_t RIGHT_CLICK_FLAG = ENABLED;
 u8_t LEFT_CLICK_FLAG = ENABLED;
+u8_t DL_FLAG = ENABLED;
 
 u16_t cursor_speed = 0;
 
@@ -90,16 +91,19 @@ u8_t App_GetImuGradient(void)
   {
     // 20 -> threshold
     case 20 ... 40:
+    case 360-20 ... 360-40:
       cursor_speed = 1;
       break;
     case 41 ... 60:
+    case 360-41 ... 360-60:
       cursor_speed = 2;
       break;
-    case 61 ... 90: // larger than 60
+    case 61 ... 89: // larger than 60
+    case 360-61 ... 360-89:
       cursor_speed = 3;
       break;
     default:
-      // do nothing
+      cursor_speed = 0;
       break;
   }
   
@@ -108,46 +112,64 @@ u8_t App_GetImuGradient(void)
   {
     // head is turned around X-axis (RIGHT_CLICK, LEFT_CLICK, DOUBLE_LEFT_CLICK)
     case ROLL:
-      // positive angle > threshold?
-      if(absolute_gradient[angle_name-1] >= THRESHOLD_X && RIGHT_CLICK_FLAG)
+      // angle > threshold?
+      // angle range [20:180]
+      if(absolute_gradient[angle_name-1] >= THRESHOLD_X && absolute_gradient[angle_name-1] < 180 && RIGHT_CLICK_FLAG)
       { 
         // disable flag to stop sending this signal multiple times
         RIGHT_CLICK_FLAG = DISABLED;
         // enable left click
         LEFT_CLICK_FLAG = ENABLED;
-        
+        // enable double left flag
+        DL_FLAG = ENABLED;
         return RIGHT_CLICK;
         
       }
-      // negative angle > threshold?
-      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_X && LEFT_CLICK_FLAG)
+      // angle < 360-threshold?
+      else if ( (absolute_gradient[angle_name-1]) <= (360-THRESHOLD_X) && (LEFT_CLICK_FLAG || DL_FLAG) )
       {
-        // disable flag to stop sending this signal multiple times
-        LEFT_CLICK_FLAG = DISABLED;
+
         // enable right click
         RIGHT_CLICK_FLAG = ENABLED;
-        if (absolute_gradient[angle_name-1] < 30)
+        // angle in range [320:360] -> left click
+        if (absolute_gradient[angle_name-1] > 360-(THRESHOLD_X+20))
         {
-           return LEFT_CLICK; 
+          // disable flag to stop sending this signal multiple times
+          LEFT_CLICK_FLAG = DISABLED;
+          // enable double left flag
+          DL_FLAG = ENABLED;
+           return LEFT_CLICK;
         }
-         // larger angle -> double left click
-         return DOUBLE_LEFT_CLICK;
+        // angle in range [180:320] -> double left click
+        else if(absolute_gradient[angle_name-1] > 180)
+          DL_FLAG = DISABLED;
+          LEFT_CLICK_FLAG = ENABLED;
+          return DOUBLE_LEFT_CLICK;
       }
       break;
     // head is turned around Y-axis (UP, DOWN)
     case PITCH:
-    // enable flags so the signal can be sent again
-      if(absolute_gradient[angle_name-1] >= THRESHOLD_Y){ RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return UP; }
-      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Y ){ RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return DOWN; }
+      // enable flags so the signal can be sent again
+      // angle range [20:180]
+      if(absolute_gradient[angle_name-1] >= THRESHOLD_Y && absolute_gradient[angle_name-1] < 180)
+      { RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; DL_FLAG = ENABLED; return UP; }
+      // angle range [180:360]
+      else if ( absolute_gradient[angle_name-1] > 180 && absolute_gradient[angle_name-1] < 360 )
+      { RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; DL_FLAG = ENABLED; return DOWN; }
       break;
     // head is turned around Z-axis (Left, Right)
     case YAW:
-    // enable flags so the signal can be sent again
-      if(absolute_gradient[angle_name-1] >= THRESHOLD_Z){RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return RIGHT; }
-      else if ( (-1*absolute_gradient[angle_name-1]) >= THRESHOLD_Z ){RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; return LEFT; }
+      // enable flags so the signal can be sent again
+      if(absolute_gradient[angle_name-1] >= THRESHOLD_Z && absolute_gradient[angle_name-1] < 180)
+      {RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; DL_FLAG = ENABLED; return RIGHT; }
+      else if ( absolute_gradient[angle_name-1] > 180 && absolute_gradient[angle_name-1] < 360 )
+      {RIGHT_CLICK_FLAG = ENABLED; LEFT_CLICK_FLAG = ENABLED; DL_FLAG = ENABLED; return LEFT; }
       break;
   }
   //-- no head motion 
+  RIGHT_CLICK_FLAG = ENABLED;
+  LEFT_CLICK_FLAG = ENABLED;
+  DL_FLAG = ENABLED;
   return NOTHING;
 }
 
