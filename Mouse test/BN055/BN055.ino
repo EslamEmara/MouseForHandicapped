@@ -4,7 +4,6 @@
 //------- Flags Status ----------
 #define ENABLED   1
 #define DISABLED  0
-
 #define THRESHOLD  20 // 20 angles
 
 u8_t RIGHT_CLICK_FLAG = ENABLED;
@@ -107,13 +106,8 @@ u8_t App_GetImuGradient(void)
     case 270 ... 284:
       cursor_speed = 7;
       break;
-    
-     
-    default:
-      cursor_speed = 0;
-      break;
   }
-  if (absolute_gradient[angle_name-1] < THRESHOLD && absolute_gradient[angle_name-1] > 360 - THRESHOLD){
+  if (absolute_gradient[angle_name-1] < THRESHOLD || absolute_gradient[angle_name-1] > 360 - THRESHOLD){
     angle_name = STOP;
   }
   // take action on mouse according to angle
@@ -157,7 +151,7 @@ u8_t App_GetImuGradient(void)
       else if((absolute_gradient[angle_name-1] > 180) && (absolute_gradient[angle_name-1] < 300) && DL_FLAG )
       {
         DL_FLAG = DISABLED;
-        LEFT_CLICK_FLAG = ENABLED;
+        LEFT_CLICK_FLAG = DISABLED;
         RIGHT_CLICK_FLAG = ENABLED;
         return DOUBLE_LEFT_CLICK;
       }
@@ -199,7 +193,8 @@ void App_OrderMouse(u8_t order)
     case RIGHT:       Serial.print("RIGHT"); Serial.println(cursor_speed);   break;
     case UP:          Serial.print("UP"); Serial.println(cursor_speed);  break;
     case DOWN:        Serial.print("DOWN"); Serial.println(cursor_speed);  break;
-    case LEFT_CLICK:  Serial.println("LCLICK");  break;
+    case LEFT_CLICK:  Serial.println("LCLICK"); break;
+                
     case RIGHT_CLICK: Serial.println("RCLICK");  break;
     case DOUBLE_LEFT_CLICK:
               Serial.println("DLCLICK");
@@ -223,10 +218,13 @@ void App_Init()
 {
   pinMode(8, INPUT);  
   Serial.begin(4800);
+
   if (BNO055_Init() == BNO055_SUCCESS){
     Serial.println("BNO055 init success");
   }
-  delay(2000);
+
+
+  delay(5000);
   while (1){
     if (App_SetReference() == 1){
       break;

@@ -283,6 +283,11 @@ typedef struct offsets{   /*sensors offsets and radius*/
 *Functions to store calibrated offsets after every boot
 *
 */
+
+
+static s16_t MagOffsets[3] = {0,189,323};
+static s32_t MagRadius = 525;
+
 EN_FAIL_t BNO055_Init();
 
 void BNO055_WriteByte(u8_t address, u8_t subAddress, u8_t data);
@@ -360,14 +365,14 @@ void BNO055_SetAccOffsets(s32_t* accel_bias);
 * i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the
             Magnetometer offsets in x ,y ,z
 */
-void BNO055_GetMagOffsets(s32_t* mag_bias);
+void BNO055_GetMagOffsets(s16_t* mag_bias);
 
 /*
 * Function to set Magnetometer offsets by pre known values for fast calibration
 * input parameter: s16_t pointer to first element of array of 3 elements that will hold the
             Magnetometer offsets in x ,y ,z
 */
-void BNO055_SetMagOffsets(s32_t* mag_bias);
+void BNO055_SetMagOffsets(s16_t* mag_bias);
 
 /*Function to set the calibration offsets and radius of all sensors together with saved value
 *save value must be saved after a FULL_CALIBRATED mode and be loaded into regs after every bootup for fast calibration

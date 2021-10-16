@@ -4,7 +4,6 @@
 #include "Arduino.h"
 
 
-// I2C read/write functions for the BNO055 sensor
 EN_FAIL_t BNO055_Init(){
       Wire.begin();
       uint8_t id = BNO055_ReadByte(BNO055_ADDRESS,BNO055_CHIP_ID);
@@ -50,14 +49,20 @@ EN_FAIL_t BNO055_Init(){
       // Select BNO055 system operation mode
       BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, OP_MODE  );
       */
+      
+        BNO055_SetMagOffsets(MagOffsets);
+        BNO055_SetMagRadius(MagRadius);
+        
       if (BNO055_SelfTest() != BNO055_SUCCESS){             /*if self test didn't pass on all sensors*/
         return BNO055_SelfTest();
       }
+      
       while (1){
-        Serial.println("Calibrate");
+        Serial.println("Calibrate Magnetometer");
         if(BNO055_GetCalibStat(MAGNETOMETER) == FULL_CALIBRATED )
           break;
       }
+        
       return BNO055_SUCCESS;
 }
 void BNO055_WriteByte( unsigned char address, unsigned char subAddress, unsigned char data )
@@ -248,7 +253,7 @@ void BNO055_GetGyroOffsets(s32_t* gyro_bias){
 * i/o parameter: s16_t pointer to first element of array of 3 elements that will hold the
             Magnetometer offsets in x ,y ,z
 */
-void BNO055_GetMagOffsets(s32_t* mag_bias){
+void BNO055_GetMagOffsets(s16_t* mag_bias){
   s8_t low = 0;
   s8_t high = 0;
   BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
@@ -272,7 +277,7 @@ void BNO055_GetMagOffsets(s32_t* mag_bias){
 * input parameter: s16_t pointer to first element of array of 3 elements that will hold the
             Magnetometer offsets in x ,y ,z
 */
-void BNO055_SetMagOffsets(s32_t* mag_bias){
+void BNO055_SetMagOffsets(s16_t* mag_bias){
   
   BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_LSB, (s16_t)mag_bias[0] & 0xFF);
   BNO055_WriteByte(BNO055_ADDRESS, BNO055_MAG_OFFSET_X_MSB, ((s16_t)mag_bias[0] >> 8) & 0xFF);
@@ -322,7 +327,7 @@ s16_t BNO055_GetMagRadius(){
 *inputs ST_BIAS_t that holds offsets and radius     (see BNO055.h for definition)*
 *
 */
-
+/*
 void BNO055_SetCalibratioProfile(ST_BIAS_t bias){
   
     BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, CONFIGMODE );
@@ -333,7 +338,7 @@ void BNO055_SetCalibratioProfile(ST_BIAS_t bias){
     BNO055_SetAccRadius(bias.ACCEL_RADIUS);
     BNO055_WriteByte(BNO055_ADDRESS, BNO055_OPR_MODE, NDOF);
     
-}
+}*/
 /*
 *Function to Test the sensors see if they fail in hardware or not
 *return EN_FAIL_t of the failed sensor (see BNO055.h for definition)
