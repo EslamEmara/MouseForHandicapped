@@ -1,4 +1,3 @@
-
 #include "BNO055.h"
 
 //------- Flags Status ----------
