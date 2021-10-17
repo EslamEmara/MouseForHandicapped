@@ -35,8 +35,7 @@ main.d main.o: .././main.c .././MCAL/DIO/TypeDefs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- .././APP/../ECUAL/Delay/Delay_interface.h .././APP/App_private.h \
- .././APP/App_config.h
+ .././APP/../ECUAL/Delay/Delay_interface.h
 
 .././MCAL/DIO/TypeDefs.h:
 
@@ -117,7 +116,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 
 .././APP/../ECUAL/Delay/Delay_interface.h:
-
-.././APP/App_private.h:
-
-.././APP/App_config.h:

@@ -11,35 +11,34 @@
 #include "../ECUAL/BNO055/BNO055.h"
 #include "../ECUAL/Mouse/Mouse.h"
 #include "../ECUAL/Delay/Delay_interface.h"
-#include "App_private.h"
-#include "App_config.h"
+
 
 
 //------ Global Variables --------
  // X,Y,Z -> Roll,pitch,yaw
  // X,Y,Z -> yaw,Roll,pitch
-s16_t reference_angles[3];
-s16_t current_reading[3];
-
-
-
-/* Movements of Mouse */
-#define UP   	 		0
-#define DOWN 	 		1
-#define LEFT 	 		2
-#define RIGHT    		3
-#define LEFT_CLICK		4
-#define RIGHT_CLICK		5
-#define DOUBLE_RIGHT_CLICK  6
-#define NOTHING			255
-
-/* Touch Sensor Status */
-#define CONTACT			1
-#define NOT_CONTACT		0
-
-/* Calibration Status */
-#define CALIBRATED 		8
-#define NOT_CALIBRATED  9
+//s16_t reference_angles[3];
+//s16_t current_reading[3];
+//
+//
+//
+///* Movements of Mouse */
+//#define UP   	 		0
+//#define DOWN 	 		1
+//#define LEFT 	 		2
+//#define RIGHT    		3
+//#define LEFT_CLICK		4
+//#define RIGHT_CLICK		5
+//#define DOUBLE_RIGHT_CLICK  6
+//#define NOTHING			255
+//
+///* Touch Sensor Status */
+//#define CONTACT			1
+//#define NOT_CONTACT		0
+//
+///* Calibration Status */
+//#define CALIBRATED 		8
+//#define NOT_CALIBRATED  9
 
 /****
  * Description: Initialization of Different Application components
@@ -99,6 +98,9 @@ u8_t App_GetCalibStatus(void);
  * Ex: App_MoveMouse(LEFT_CLICK);
  */		
 void App_OrderMouse(u8_t order);
+
+
+u8_t App_SetReference(void);
 
 
 #endif
