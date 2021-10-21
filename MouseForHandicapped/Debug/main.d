@@ -9,11 +9,13 @@ main.d main.o: .././main.c .././MCAL/DIO/TypeDefs.h \
  .././APP/../ECUAL/Touch/../../MCAL/DIO/RegMap.h \
  .././APP/../ECUAL/Touch/../../MCAL/DIO/Math.h \
  .././APP/../ECUAL/BNO055/BNO055.h \
- .././APP/../ECUAL/BNO055/../../MCAL/I2C/I2C.h \
- .././APP/../ECUAL/BNO055/../../MCAL/I2C/BIT_MATH.h \
- .././APP/../ECUAL/BNO055/../../MCAL/I2C/I2C_RegMaph.h \
- .././APP/../ECUAL/BNO055/../../MCAL/I2C/TypeDefs.h \
- .././APP/../ECUAL/BNO055/BNO005_CONFIG.h .././APP/../ECUAL/Mouse/Mouse.h \
+ .././APP/../ECUAL/BNO055/BNO005_CONFIG.h \
+ .././APP/../ECUAL/BNO055/..\..\MCAL\I2C\I2C.h \
+ .././APP/../ECUAL/BNO055/..\..\MCAL\I2C\BIT_MATH.h \
+ .././APP/../ECUAL/BNO055/..\..\MCAL\I2C\I2C_RegMaph.h \
+ .././APP/../ECUAL/BNO055/..\..\MCAL\I2C\TypeDefs.h \
+ .././APP/../ECUAL/BNO055/..\..\MCAL\I2C\TypeDefs.h \
+ .././APP/../ECUAL/Mouse/Mouse.h \
  .././APP/../ECUAL/Mouse/../../MCAL/USB/usbdrv.h \
  .././APP/../ECUAL/Mouse/../../MCAL/USB/usbconfig.h \
  .././APP/../ECUAL/Mouse/../../MCAL/USB/usbportability.h \
@@ -61,15 +63,17 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 
 .././APP/../ECUAL/BNO055/BNO055.h:
 
-.././APP/../ECUAL/BNO055/../../MCAL/I2C/I2C.h:
-
-.././APP/../ECUAL/BNO055/../../MCAL/I2C/BIT_MATH.h:
-
-.././APP/../ECUAL/BNO055/../../MCAL/I2C/I2C_RegMaph.h:
-
-.././APP/../ECUAL/BNO055/../../MCAL/I2C/TypeDefs.h:
-
 .././APP/../ECUAL/BNO055/BNO005_CONFIG.h:
+
+.././APP/../ECUAL/BNO055/..\..\MCAL\I2C\I2C.h:
+
+.././APP/../ECUAL/BNO055/..\..\MCAL\I2C\BIT_MATH.h:
+
+.././APP/../ECUAL/BNO055/..\..\MCAL\I2C\I2C_RegMaph.h:
+
+.././APP/../ECUAL/BNO055/..\..\MCAL\I2C\TypeDefs.h:
+
+.././APP/../ECUAL/BNO055/..\..\MCAL\I2C\TypeDefs.h:
 
 .././APP/../ECUAL/Mouse/Mouse.h:
 

@@ -9,6 +9,7 @@
 #ifndef BNO005_CONFIG_H_
 #define BNO005_CONFIG_H_
 
+#include "..\..\MCAL\I2C\I2C.h"
 #define ADO					 0					/*i2c adress*/
 #define OPERATION_FREQ		FREQ_16Mhz
 
