@@ -16,7 +16,7 @@ def get_digits(text):
         if i.isdigit():
             c += i
     return c
-
+pyautogui.click(pyautogui.position() ,duration=0)
 while(True):
     try:
         order_data = arduino.readline()
@@ -32,7 +32,7 @@ while(True):
         elif ("DOWN" in order_data):
             pyautogui.moveRel(0, int(get_digits(order_data)), duration=0)
         elif ("LCLICK" in order_data):
-            pyautogui.click(pyautogui.position())
+            pyautogui.click(pyautogui.position() ,duration=0.1)
         elif ("RCLICK" in order_data):
             pyautogui.click(button='right')
 

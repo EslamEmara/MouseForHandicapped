@@ -1,5 +1,8 @@
 #include "BNO055.h"
-
+#define RED_LED     3
+#define GREEN_LED   2
+#define ON          HIGH
+#define OFF         LOW+
 //------- Flags Status ----------
 #define ENABLED   1
 #define DISABLED  0
@@ -26,8 +29,8 @@ s16_t current_reading[3] = {0,0,0};
 #define STOP    8
 
 /* Angles */
-#define ROLL   2
-#define PITCH  3
+#define ROLL   3
+#define PITCH  2
 #define YAW    1
 
 /* Touch Sensor Status */
@@ -207,17 +210,33 @@ u8_t App_SetReference(){
     delay(2000);
     if (digitalRead(8) == HIGH){
       BNO055_ReadEulerAngles(reference_angles);       // -100 , -50 , 0
+      LED_GREEN(1);
+      LED_RED(0);
       return 1;
     }
   }
   return 0;
 }
-
+void LED_GREEN(u8_t mode){
+  if (mode == 1)
+  digitalWrite(GREEN_LED , HIGH);
+  else
+  digitalWrite(GREEN_LED , LOW);
+}
+void LED_RED(u8_t mode){
+  if (mode == 1)
+  digitalWrite(RED_LED , HIGH);
+  else
+  digitalWrite(RED_LED , LOW);
+}
 void App_Init()
 {
-  pinMode(8, INPUT);  
+  pinMode(GREEN_LED,OUTPUT);
+  pinMode(RED_LED,OUTPUT);
+  pinMode(8, INPUT_PULLUP);  
   Serial.begin(4800);
-
+  LED_RED(1);
+  LED_GREEN(0);
   if (BNO055_Init() == BNO055_SUCCESS){
     Serial.println("BNO055 init success");
   }
@@ -240,6 +259,8 @@ void loop() {
     App_OrderMouse(App_GetImuGradient());
   else{
     while (1){
+      LED_RED(1);
+      LED_GREEN(0);
     if (App_SetReference() == 1){
       break;
     }
